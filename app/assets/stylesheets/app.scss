@@ -1,0 +1,22 @@
+// Place all the styles related to the Home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+img {
+  height: 100%;
+  width: auto;
+}
+
+#error-404-title {
+  color: #EF5350;
+  font-size: 7.5em;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 5%;
+}
+
+#error-404-subtitle {
+  color: #EF5350;
+  font-size: 2.5em;
+  text-align: center;
+}

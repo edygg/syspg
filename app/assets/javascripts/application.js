@@ -12,5 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
+//= require angular/angular.min
+//= require angular-animate/angular-animate.min
+//= require angular-aria/angular-aria.min
+//= require angular-messages/angular-messages.min
+//= require angular-material/angular-material.min
+//= require angular-route/angular-route.min
 //= require_tree .

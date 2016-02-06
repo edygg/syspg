@@ -1,0 +1,37 @@
+app = angular.module('SyspgApp', ['ngMaterial', 'ngRoute']);
+
+app.config(['$routeProvider', '$mdThemingProvider', function($routeProvider, $mdThemingProvider) {
+  /* Router Paths */
+  $routeProvider.
+    when('/', {
+      templateUrl: "<%= asset_path('home/index.html') %>",
+      controller: "HomeController"
+    }).
+    otherwise({
+      templateUrl: "<%= asset_path('errors/404.html') %>"
+    });
+  /* End Router Paths */
+  
+  /* Theme */
+  $mdThemingProvider.theme('default')
+    .primaryPalette('indigo')
+    .accentPalette('red', {
+      'default': '400'  
+    });
+  /* End Theme */
+}]);
+
+/* Controllers */
+app.controller('HomeController', function() {
+
+});
+/* End Controllers */
+
+/* Directives */
+app.directive('mainNavbar', function() {
+  return {
+    restrict: 'E',
+    templateUrl: "<%= asset_path('shared/navbar.html') %>"
+  };
+});
+/* End Directives */
