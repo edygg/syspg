@@ -1,0 +1,92 @@
+<main-navbar></main-navbar>
+
+<header class="indigo lighten-1" layout="row">
+  <span flex></span>
+  <h1 class="page-title white-text">Registro de empresas</h1>
+  <span flex></span>
+</header>
+<br>
+<div layout="row">
+  <span flex="20"></span>
+  <div flex>
+    <form novalidate ng-submit="companySignupForm.$valid && companySignUpCtrl.submitRegistration(companySignUpCtrl.newUser, companySignUpCtrl.companyInfo)" name="companySignupForm">
+      <h6>{{}}</h6>
+      <h6>Información de la cuenta empresarial</h6>
+      <div layout="row" layout-wrap>
+        <md-input-container flex="50">
+          <label>Email</label>
+          <input name="userEmail" ng-model="companySignUpCtrl.newUser.email" type="email" required ng-pattern="/^.+@.+\..+$/">
+          <div ng-messages="companySignupForm.userEmail.$error" role="alert">
+            <div ng-message="required">Es requerido.</div>
+            <div ng-message="pattern">No luce como un email.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="25">
+          <label>Contraseña</label>
+          <input name="userPassword" ng-model="companySignUpCtrl.newUser.password" type="password" required>
+          <div ng-messages="companySignupForm.userPassword.$error" role="alert">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="25">
+          <label>Confirmar contraseña</label>
+          <input name="userConfirmationPassword" ng-model="companySignUpCtrl.newUser.password_confirmation" type="password" required>
+          <div ng-messages="companySignupForm.userConfirmationPassword.$error" role="alert">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container flex="33">
+          <label>Nombre de la empresa</label>
+          <input name="companyName" ng-model="companySignUpCtrl.companyInfo.name" type="text" required>
+          <div ng-messages="companySignupForm.companyName.$error" role="alert">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="33">
+          <label>Teléfono principal</label>
+          <input name="companyPhone" ng-model="companySignUpCtrl.companyInfo.phone" type="text" required>
+          <div ng-messages="companySignupForm.companyPhone.$error" role="alert">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="33">
+          <label>Sitio web</label>
+          <input ng-model="companySignUpCtrl.companyInfo.web_site" type="text">
+        </md-input-container>
+      </div>
+
+      <h6>Información de contacto</h6>
+      <div layout="row" layout-wrap>
+        <md-input-container flex="33">
+          <label>Nombre del contacto</label>
+          <input name="contactName" ng-model="companySignUpCtrl.companyInfo.contact_name" type="text" required>
+          <div ng-messages="companySignupForm.contactName.$error" role="alert">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="33">
+          <label>Email del contacto</label>
+          <input name="contactEmail" ng-model="companySignUpCtrl.companyInfo.contact_email" type="email" required ng-pattern="/^.+@.+\..+$/">
+          <div ng-messages="companySignupForm.contactEmail.$error" role="alert">
+            <div ng-message="required">Es requerido.</div>
+            <div ng-message="pattern">No luce como un email.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="33">
+          <label>Teléfono del contacto</label>
+          <input name="contactPhone" ng-model="companySignUpCtrl.companyInfo.contact_phone" type="text" required>
+          <div ng-messages="companySignupForm.contactPhone.$error" role="alert">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="33">
+          <label>Puesto de trabajo del contacto</label>
+          <input ng-model="companySignUpCtrl.companyInfo.contact_job_title" type="text">
+        </md-input-container>
+      </div>
+      <md-button class="md-accent md-raised" type="submit">Registrar</md-button>
+    </form>
+  </div>
+  <span flex="20"></span>
+</div>

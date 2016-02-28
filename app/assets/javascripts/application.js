@@ -12,10 +12,13 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require Materialize/dist/js/materialize.min
 //= require angular/angular.min
 //= require angular-animate/angular-animate.min
 //= require angular-aria/angular-aria.min
 //= require angular-messages/angular-messages.min
 //= require angular-material/angular-material.min
-//= require angular-route/angular-route.min
+//= require angular-ui-router/release/angular-ui-router.min
+//= require angular-cookie/angular-cookie.min
+//= require ng-token-auth/dist/ng-token-auth.min
 //= require_tree .

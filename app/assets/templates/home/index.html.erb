@@ -1,0 +1,113 @@
+<main-navbar></main-navbar>
+<div class="slider">
+  <ul class="slides">
+    <li>
+      <%= image_tag 'img-1-dark.jpg' %>
+      <div class="caption center-align">
+        <h3>Gestor de Prácticas Profesionales y Proyectos de graduación</h3>
+        <h5>Un portafolio de opciones donde podrás elegir tu Práctica Profesional o tu Proyecto de Graduación.</h5>
+      </div>
+    </li>
+    <li>
+      <%= image_tag 'img-2-dark.jpg' %>
+      <div class="caption left-align">
+        <h3>Más de {{homeCtrl.homeData.options}} opciones para vos</h3>
+        <h5>Muchas empresas están dispuestas a ayudarte a culminar tu etapa universitaria.</h5>
+      </div>
+    </li>
+    <li>
+      <%= image_tag 'img-3-dark.jpg' %>
+      <div class="caption right-align">
+        <h3>Registrados más de {{homeCtrl.homeData.usersRegistered}} estudiantes</h3>
+        <h5>Asesores y jefes académicos serán tus guías en esta etapa de tu carrera</h5>
+      </div>
+    </li>
+  </ul>
+</div>
+<md-content class="md-padding">
+  <p class="flow-text center-align home-text">¿Eres estudiante, representante de una empresa, jefe académico o asesor? Regístrate para poder usar el Gestor de Prácticas Profesionales y Proyectos de Graduación.</p>
+  <div layout="row">
+    <span flex></span>
+    <md-button class="md-raised md-accent" ui-sref="user.sign_up_choice">Regístrate</md-button>
+    <span flex></span>
+  </div>
+
+  <div layout="row">
+    <span flex></span>
+    <md-card flex>
+      <%= image_tag 'card-1-crop.jpg', class: 'md-card-image card-imgs' %>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">Empresas</span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <p>Registra tu empresa para postular plazas donde estudiantes puedan realizar su práctica profesional o proyecto de graduación.</p>
+      </md-card-content>
+      <md-card-actions layout="column" layout-align="start">
+        <md-button class="md-accent">Publica una propuesta</md-button>
+      </md-card-actions>
+    </md-card>
+
+    <md-card flex>
+      <%= image_tag 'card-2-crop.jpg', class: 'md-card-image card-imgs' %>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">Estudiantes</span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <p>Puedes buscar el lugar donde realizarás tu práctica profesional o el proyecto de graduación, ver registros de asesoramiento y más.</p>
+      </md-card-content>
+      <md-card-actions layout="column" layout-align="start">
+        <md-button class="md-accent">Entrar</md-button>
+      </md-card-actions>
+    </md-card>
+
+    <md-card flex>
+      <%= image_tag 'card-3-crop.jpg', class: 'md-card-image card-imgs' %>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">Jefes y Asesores</span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <p>Conócelos, son los encargados de vincular los estudiantes con prácticas profesionales o proyectos de graduación.</p>
+      </md-card-content>
+      <md-card-actions layout="column" layout-align="start">
+        <md-button class="md-accent">Ver perfiles</md-button>
+      </md-card-actions>
+    </md-card>
+    <span flex></span>
+  </div>
+</md-content>
+<footer class="page-footer  red lighten-1">
+  <div class="container">
+    <div class="row">
+      <div class="col l3 s12">
+        <%= image_tag 'edilson-375x375.jpg', id: 'photo' %>
+      </div>
+
+      <div class="col l5 s12">
+        <h5 class="white-text">Objetivo de la plataforma</h5>
+        <p class="grey-text text-lighten-4">Desarrollar una aplicación web que pueda gestionar todo el proceso de desarrollo de una práctica profesional o un proyecto de graduación para facilitar la toma de decisiones a las autoridades universitarias.</p>
+      </div>
+      <div class="col l4 s12">
+        <h5 class="white-text">UNITEC</h5>
+        <ul>
+          <li><a class="grey-text text-lighten-3" href="http://www.unitec.edu/">Página principal</a></li>
+          <li><a class="grey-text text-lighten-3" href="http://www.unitec.edu/academicos/">Carreras</a></li>
+          <li><a class="grey-text text-lighten-3" href="https://portal.unitec.edu/">Portal</a></li>
+          <li><a class="grey-text text-lighten-3" href="http://www.unitec.edu/bcrai/">CRAI</a></li>
+          <li><a class="grey-text text-lighten-3" href="http://www.unitec.edu/cap/">CAP</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+      © 2015 Todos los derechos reservados
+      <span class="grey-text text-lighten-4 right">Edilson F. González</span>
+    </div>
+  </div>
+</footer>
