@@ -1,0 +1,63 @@
+<div>
+  <form novalidate name="professionalPracticeForm" ng-submit="professionalPracticeForm.$valid && professionalPracticeCtrl.submitPractice(professionalPracticeCtrl.newPractice)">
+    <h5 class="center-align">Agregar una práctica profesional</h5>
+    <div layout="row" layout-wrap>
+      <md-input-container class="md-block" flex="33">
+        <label>Área o departamento</label>
+        <input ng-model="professionalPracticeCtrl.newPractice.area" name="practiceArea" required>
+        <div ng-messages="professionalPracticeForm.practiceArea.$error">
+          <div ng-message="required">Es requerido.</div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block" flex="33">
+        <label>Cargo</label>
+        <input ng-model="professionalPracticeCtrl.newPractice.charge" name="practiceCharge" required>
+        <div ng-messages="professionalPracticeForm.practiceCharge.$error">
+          <div ng-message="required">Es requerido.</div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block" flex="33">
+        <label>Objetivo</label>
+        <input ng-model="professionalPracticeCtrl.newPractice.objective" name="practiceObjective" required>
+        <div ng-messages="professionalPracticeForm.practiceObjective.$error">
+          <div ng-message="required">Es requerido.</div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block" flex="50">
+        <label>Responsabilidades</label>
+        <textarea ng-model="professionalPracticeCtrl.newPractice.daily_tasks" name="practiceDailyTasks" required></textarea>
+        <div ng-messages="professionalPracticeForm.practiceDailyTasks.$error">
+          <div ng-message="required">Es requerido.</div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block" flex="50">
+        <label>Observaciones</label>
+        <textarea ng-model="professionalPracticeCtrl.newPractice.observation" name="practiceObservation"></textarea>
+      </md-input-container>
+      <div class="md-block" flex="33">
+        <md-checkbox ng-model="professionalPracticeCtrl.newPractice.hire_probability">Probabilidad de empleo</md-checkbox>
+      </div>
+      <div class="md-block" flex="33">
+        <md-checkbox ng-model="professionalPracticeCtrl.newPractice.flexitime">Flexibilidad de horario</md-checkbox>
+      </div>
+    </div>
+    <md-button class="md-accent md-raised" type="submit">Publicar</md-button>
+  </form>
+</div>
+<br>
+<md-divider></md-divider>
+<h5 class="center-align">Practicas profesionales publicadas</h5>
+<md-list>
+  <md-list-item ng-show="professionalPracticeCtrl.practices.length <= 0">
+    <p>No ha creado prácticas profesionales.</p>
+  </md-list-item>
+  <md-list-item ng-repeat="practice in professionalPracticeCtrl.practices" class="md-2-line">
+    <div class="md-list-item-text" layout="column">
+      <h3>{{practice.area}} - {{practice.charge}}</h3>
+      <p>{{practice.objective}}</p>
+    </div>
+    <md-button class="md-secundary md-icon-button" ng-click="professionalPracticeCtrl.removePractice(practice.id)">
+      <md-icon md-font-set="material-icons" class="md-accent">delete</md-icon>
+    </md-button>
+  </md-list-item>
+</md-list>

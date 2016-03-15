@@ -11,10 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160224072400) do
+ActiveRecord::Schema.define(version: 20160302152505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "academies", force: :cascade do |t|
+    t.string   "name"
+    t.string   "phone"
+    t.integer  "user_id"
+    t.integer  "campu_id"
+    t.integer  "major_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "campus", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "companies", force: :cascade do |t|
     t.string   "name"
@@ -27,6 +43,43 @@ ActiveRecord::Schema.define(version: 20160224072400) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.integer  "user_id"
+  end
+
+  create_table "faculties", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "majors", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "faculty_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "professional_practices", force: :cascade do |t|
+    t.string   "area"
+    t.string   "charge"
+    t.string   "objective"
+    t.string   "daily_tasks"
+    t.string   "observation"
+    t.boolean  "hire_probability", default: false
+    t.boolean  "flexitime",        default: false
+    t.integer  "company_id"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.string   "name"
+    t.string   "unitec_id"
+    t.string   "phone"
+    t.integer  "user_id"
+    t.integer  "campu_id"
+    t.integer  "major_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

@@ -11,4 +11,6 @@ class User < ActiveRecord::Base
          :confirmable
   
   has_one :company
+  has_one :student
+  has_one :academy
 end

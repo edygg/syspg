@@ -12,6 +12,12 @@ class CompaniesController < ApplicationController
   def show
   end
 
+  # GET /company_belongs_to_user
+  # GET /company_belongs_to_user.json
+  def company_belongs_to_user
+    @company = Company.find_by_user_id(params[:user_id])
+  end
+
   # GET /companies/new
   def new
     @company = Company.new
@@ -28,7 +34,7 @@ class CompaniesController < ApplicationController
     @user = User.find_by_id(company_params[:user_id])
     @user.role = 'company'
     respond_to do |format|
-      if @company.save
+      if @company.save && @user.save
         format.html { redirect_to @company, notice: 'Company was successfully created.' }
         format.json { render :show, status: :created, location: @company }
       else

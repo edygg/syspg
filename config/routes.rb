@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
-  resources :companies
+  resources :professional_practices
+  resources :academies
+  resources :students
+  resources :majors
+  resources :faculties
+  resources :campus
+  resources :companies do
+    get 'company_belongs_to_user', on: :collection 
+  end
   mount_devise_token_auth_for 'User', at: 'auth'
   # devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.

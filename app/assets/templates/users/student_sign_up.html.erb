@@ -1,0 +1,88 @@
+<main-navbar></main-navbar>
+
+<header class="indigo lighten-1" layout="row">
+  <span flex></span>
+  <h1 class="page-title white-text">Registro de estudiantes</h1>
+  <span flex></span>
+</header>
+<br>
+<div layout="row">
+  <span flex="20"></span>
+  <div flex>
+    <form novalidate ng-submit="studentSignupForm.$valid && studentSignUpCtrl.submitRegistration(studentSignUpCtrl.newUser, studentSignUpCtrl.studentInfo)" name="studentSignupForm">
+      <h6>Información general de la cuenta</h6>
+      <div layout="row" layout-wrap>
+        <md-input-container flex="50" class="md-block">
+          <label>Email</label>
+          <input name="userEmail" ng-model="studentSignUpCtrl.newUser.email" type="email" required ng-pattern="/^.+@.+\..+$/">
+          <div ng-messages="studentSignupForm.userEmail.$error">
+            <div ng-message="required">Es requerido.</div>
+            <div ng-message="pattern">No luce como un email.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="25" class="md-block">
+          <label>Contraseña</label>
+          <input name="userPassword" ng-model="studentSignUpCtrl.newUser.password" type="password" required>
+          <div ng-messages="studentSignupForm.userPassword.$error" role="alert">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="25" class="md-block">
+          <label>Confirmar contraseña</label>
+          <input name="userConfirmationPassword" ng-model="studentSignUpCtrl.newUser.password_confirmation" type="password" required>
+          <div ng-messages="studentSignupForm.userConfirmationPassword.$error" role="alert">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+      </div>
+
+      <h6>Información del estudiante</h6>
+      <div layout="row" layout-wrap>
+        <md-input-container flex="33" class="md-block">
+          <label>Nombre</label>
+          <input name="studentName" type="text" required ng-model="studentSignUpCtrl.studentInfo.name">
+          <div ng-messages="studentSignupForm.studentName.$error">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="33" class="md-block">
+          <label>Número de cuenta</label>
+          <input name="studentUnitecId" type="text" required ng-pattern="/[0-9]{8}/" ng-model="studentSignUpCtrl.studentInfo.unitec_id">
+          <div ng-messages="studentSignupForm.studentUnitecId.$error">
+            <div ng-message="required">Es requerido.</div>
+            <div ng-message="pattern">No luce como un número de cuenta.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="33" class="md-block">
+          <label>Teléfono</label>
+          <input name="studentPhone" type="text" required ng-model="studentSignUpCtrl.studentInfo.phone">
+          <div ng-messages="studentSignupForm.studentPhone.$error">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="33" class="md-block">
+          <label>Campus</label>
+          <md-select required name="studentCampus" ng-model="studentSignUpCtrl.studentInfo.campu_id" md-on-open="studentSignUpCtrl.loadCampus()" >
+            <md-option ng-value="campus.id" ng-repeat="campus in studentSignUpCtrl.campusList">{{campus.name}}</md-option>
+          </md-select>
+          <div ng-messages="studentSignupForm.studentCampus.$error" ng-if="studentSignupForm.$dirty">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="33" class="md-block">
+          <label>Carrera</label>
+          <md-select required name="studentMajor" ng-model="studentSignUpCtrl.studentInfo.major_id" md-on-open="studentSignUpCtrl.loadMajors()">
+            <md-option ng-value="major.id" ng-repeat="major in studentSignUpCtrl.majors">{{major.name}}</md-option>
+          </md-select>
+          <div ng-messages="studentSignupForm.studentMajor.$error" ng-if="studentSignupForm.$dirty">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+
+
+      </div>
+      <md-button class="md-accent md-raised" type="submit">Registrar</md-button>
+    </form>
+  </div>
+  <span flex="20"></span>
+</div>

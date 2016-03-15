@@ -1,0 +1,45 @@
+<%= form_for(@professional_practice) do |f| %>
+  <% if @professional_practice.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@professional_practice.errors.count, "error") %> prohibited this professional_practice from being saved:</h2>
+
+      <ul>
+      <% @professional_practice.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :area %><br>
+    <%= f.text_field :area %>
+  </div>
+  <div class="field">
+    <%= f.label :charge %><br>
+    <%= f.text_field :charge %>
+  </div>
+  <div class="field">
+    <%= f.label :objective %><br>
+    <%= f.text_field :objective %>
+  </div>
+  <div class="field">
+    <%= f.label :daily_tasks %><br>
+    <%= f.text_field :daily_tasks %>
+  </div>
+  <div class="field">
+    <%= f.label :observation %><br>
+    <%= f.text_field :observation %>
+  </div>
+  <div class="field">
+    <%= f.label :hire_probability %><br>
+    <%= f.check_box :hire_probability %>
+  </div>
+  <div class="field">
+    <%= f.label :flexitime %><br>
+    <%= f.check_box :flexitime %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

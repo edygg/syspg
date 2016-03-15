@@ -1,0 +1,32 @@
+<main-navbar></main-navbar>
+
+<header class="indigo lighten-1" layout="row">
+  <span flex></span>
+  <h1 class="page-title white-text">Entrar al sistema</h1>
+  <span flex></span>
+</header>
+<br>
+<div layout="row">
+  <span flex="30"></span>
+  <div flex>
+    <form novalidate ng-submit="signInForm.$valid && signInCtrl.submitLogin(signInCtrl.user)" name="signInForm">
+      <md-input-container class="md-block">
+        <label>Email</label>
+        <input name="userEmail" ng-model="signInCtrl.user.email" required ng-pattern="/^.+@.+\..+$/">
+        <div ng-messages="signInForm.userEmail.$error">
+          <div ng-message="required">Es requerido.</div>
+          <div ng-message="pattern">No luce como un email.</div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block">
+        <label>Contraseña</label>
+        <input name="userPassword" ng-model="signInCtrl.user.password" required type="password">
+        <div ng-messages="signInForm.userPassword.$error">
+          <div ng-message="required">Es requerido.</div>
+        </div>
+      </md-input-container>
+      <md-button class="md-accent md-raised" type="submit">Entrar</md-button>
+    </form>
+  </div>
+  <span flex="30"></span>
+</div>

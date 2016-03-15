@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Area:</strong>
+  <%= @professional_practice.area %>
+</p>
+
+<p>
+  <strong>Charge:</strong>
+  <%= @professional_practice.charge %>
+</p>
+
+<p>
+  <strong>Objective:</strong>
+  <%= @professional_practice.objective %>
+</p>
+
+<p>
+  <strong>Daily tasks:</strong>
+  <%= @professional_practice.daily_tasks %>
+</p>
+
+<p>
+  <strong>Observation:</strong>
+  <%= @professional_practice.observation %>
+</p>
+
+<p>
+  <strong>Hire probability:</strong>
+  <%= @professional_practice.hire_probability %>
+</p>
+
+<p>
+  <strong>Flexitime:</strong>
+  <%= @professional_practice.flexitime %>
+</p>
+
+<%= link_to 'Edit', edit_professional_practice_path(@professional_practice) %> |
+<%= link_to 'Back', professional_practices_path %>

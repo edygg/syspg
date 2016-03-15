@@ -1,0 +1,85 @@
+<main-navbar></main-navbar>
+
+<header class="indigo lighten-1" layout="row">
+  <span flex></span>
+  <h1 class="page-title white-text">Registro de académicos</h1>
+  <span flex></span>
+</header>
+<br>
+
+<div layout="row">
+  <span flex="20"></span>
+  <div flex>
+    <form novalidate ng-submit="academySignupForm.$valid && academySignUpCtrl.submitRegistration(academySignUpCtrl.newUser, academySignUpCtrl.academyInfo)" name="academySignupForm">
+      <h6>Información general de la cuenta</h6>
+      <div layout="row" layout-wrap>
+        <md-input-container flex="50" class="md-block">
+          <label>Email</label>
+          <input name="userEmail" ng-model="academySignUpCtrl.newUser.email" type="email" required ng-pattern="/^.+@.+\..+$/">
+          <div ng-messages="academySignupForm.userEmail.$error">
+            <div ng-message="required">Es requerido.</div>
+            <div ng-message="pattern">No luce como un email.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="25" class="md-block">
+          <label>Contraseña</label>
+          <input name="userPassword" ng-model="academySignUpCtrl.newUser.password" type="password" required>
+          <div ng-messages="academySignupForm.userPassword.$error" role="alert">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="25" class="md-block">
+          <label>Confirmar contraseña</label>
+          <input name="userConfirmationPassword" ng-model="academySignUpCtrl.newUser.password_confirmation" type="password" required>
+          <div ng-messages="academySignupForm.userConfirmationPassword.$error" role="alert">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+      </div>
+
+      <h6>Información del estudiante</h6>
+      <div layout="row" layout-wrap>
+        <md-input-container flex="50" class="md-block">
+          <label>Nombre</label>
+          <input name="academyName" type="text" required ng-model="academySignUpCtrl.academyInfo.name">
+          <div ng-messages="academySignupForm.academyName.$error">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="50" class="md-block">
+          <label>Teléfono</label>
+          <input name="academyPhone" type="text" required ng-model="academySignUpCtrl.academyInfo.phone">
+          <div ng-messages="academySignupForm.academyPhone.$error">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="50" class="md-block">
+          <label>Campus</label>
+          <md-select required name="academyCampus" ng-model="academySignUpCtrl.academyInfo.campus_id" md-on-open="academySignUpCtrl.loadCampus()" >
+            <md-option ng-value="campus.id" ng-repeat="campus in academySignUpCtrl.campusList">{{campus.name}}</md-option>
+          </md-select>
+          <div ng-messages="academySignupForm.academyCampus.$error" ng-if="academySignupForm.$dirty">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="50" class="md-block">
+          <label>Carrera</label>
+          <md-select required name="academyMajor" ng-model="academySignUpCtrl.academyInfo.major_id" md-on-open="academySignUpCtrl.loadMajors()">
+            <md-option ng-value="major.id" ng-repeat="major in academySignUpCtrl.majors">{{major.name}}</md-option>
+          </md-select>
+          <div ng-messages="academySignupForm.academyMajor.$error" ng-if="academySignupForm.$dirty">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+
+        <md-radio-group ng-model="academySignUpCtrl.academyInfo.role">
+          <md-radio-button value="academy" class="md-primary">Asesor</md-radio-button>
+          <md-radio-button value="academy_chef">Jefe académico</md-radio-button>
+        </md-radio-group>
+
+      </div>
+      <md-button class="md-accent md-raised" type="submit">Registrar</md-button>
+    </form>
+  </div>
+  <span flex="20"></span>
+</div>

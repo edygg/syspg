@@ -1,0 +1,2 @@
+module ProfessionalPracticesHelper
+end

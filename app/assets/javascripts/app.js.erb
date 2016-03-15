@@ -1,4 +1,4 @@
-app = angular.module('SyspgApp', ['ngMaterial', 'ui.router', 'ng-token-auth']);
+app = angular.module('SyspgApp', ['ngMaterial', 'ui.router', 'ng-token-auth', 'ngMessages']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$authProvider', function($stateProvider, $urlRouterProvider, $mdThemingProvider, $authProvider) {
   /* Router Paths */
@@ -16,10 +16,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$auth
       url: '/users',
       template: '<ui-view/>',
       abstract: true,
+      controller: function($state, $user) {
+        if ($user.isUserSignedIn()) {
+          $state.go('home');
+        }
+      },
     })
     .state('user.sign_in', {
       url: '/sign_in',
-      templateUrl: "<%= asset_path('users/sign_in.html') %>"
+      templateUrl: "<%= asset_path('users/sign_in.html') %>",
+      controller: "SignInController",
+      controllerAs: "signInCtrl"
     })
     .state('user.sign_up_choice', {
       url: '/sign_up_choice',
@@ -27,15 +34,46 @@ app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$auth
     })
     .state('user.company_sign_up', {
       url: '/company_sign_up',
-      templateUrl: "<%= asset_path('users/company_sign_up.html'); %>",
+      templateUrl: "<%= asset_path('users/company_sign_up.html') %>",
       controller: "CompanySignUpController",
       controllerAs: 'companySignUpCtrl'
     })
-    .state('user.sign_up', {
-      url: '/sign_up',
-      templateUrl: "<%= asset_path('users/sign_up.html') %>",
-      controller: 'UserSignUpController',
-      controllerAs: 'userSignUpCtrl'
+    .state('user.student_sign_up', {
+      url: '/student_sign_up',
+      templateUrl: "<%= asset_path('users/student_sign_up.html') %>",
+      controller: 'StudentSignUpController',
+      controllerAs: 'studentSignUpCtrl'
+    })
+    .state('user.academy_sign_up', {
+      url: '/academy_sign_up',
+      templateUrl: "<%= asset_path('users/academy_sign_up.html') %>",
+      controller: 'AcademySignUpController',
+      controllerAs: 'academySignUpCtrl'
+    })
+    .state('academy', {
+      url: '/academies',
+      templateUrl: "<%= asset_path('academies/index.html') %>"
+    })
+    .state('company', {
+      url: '/companies',
+      templateUrl: "<%= asset_path('companies/index.html') %>",
+      controller: function($state) {
+        $state.go('company.dashboard');
+      }
+    })
+    .state('company.dashboard', {
+      url: '/dashboard',
+      templateUrl: "<%= asset_path('companies/dashboard.html') %>"
+    })
+    .state('company.professional_practice', {
+      url: '/professional_practices',
+      templateUrl: "<%= asset_path('companies/professional_practices.html') %>",
+      controller: "ProfessionalPracticeController",
+      controllerAs: "professionalPracticeCtrl"
+    })
+    .state('student', {
+      url: '/students',
+      templateUrl: "<%= asset_path('students/index.html') %>"
     });
   /* End Router Paths */
 
@@ -49,37 +87,94 @@ app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$auth
 
   /* Token Auth */
   $authProvider.configure({
-    apiUrl: 'http://syspg-153073.nitrousapp.com'
+    apiUrl: 'http://syspg-153073.nitrousapp.com',
+    confirmationSuccessUrl: 'http://syspg-153073.nitrousapp.com'
   });
   /* End Token Auth */
 }]);
 
+/* Run events */
+app.run(function($rootScope){
+  $rootScope.user = undefined;
+
+  $rootScope.$on('auth:login-success', function(ev, user) {
+      $rootScope.user = user;
+  });
+
+  $rootScope.$on('auth:validation-success', function(ev, user) {
+      $rootScope.user = user;
+  });
+
+  $rootScope.$on('auth:session-expired', function(ev) {
+    $rootScope.user = undefined;
+  });
+
+  $rootScope.$on('auth:logout-success', function(ev) {
+    $rootScope.user = undefined;
+  });
+});
+/* End Run events */
+
 /* Controllers */
-app.controller('HomeController', function() {
+app.controller('HomeController', ['$scope', '$user', '$state', function($scope, $user, $state) {
   $('.slider').slider({ indicators: false });
   this.homeData = {
     options: 30,
     usersRegistered: 100
   };
-});
+  
+  if ($user.isCompany()) {
+    $state.go('company');
+  } else if ($user.isStudent()) {
+    $state.go('student');
+  } else if ($user.isAcademy()) {
+    $state.go('academy');
+  }
+}]);
 
-app.controller('UserSignUpController', ['$auth', function($auth) {
-  this.newUser = {};
-
-  this.submitRegistration = function(userInfo) {
-    console.log("Entre al evento");
-    $auth.submitRegistration(userInfo)
-      .then(function(resp) {
-        console.log(resp);
+app.controller('MainNavbarController', ['$user', '$state', '$auth', '$mdToast', function($user, $state, $auth, $mdToast) {
+  this.isUserSignedIn = $user.isUserSignedIn();
+  this.userInfo = $user.getUserInfo();
+  this.openUserMenu = function($mdOpenMenu, ev) {
+    $mdOpenMenu(ev);
+  };
+  this.signOutUser = function() {
+    $auth.signOut()
+      .then(function(response){
+        $state.go('home');
+        $mdToast.show($mdToast.simple().textContent("Hasta luego."));
       })
-      .catch(function(resp) {
-        console.log(resp);
+      .catch(function(response) {
+        console.log(response);
       });
   };
 }]);
 
+app.controller('SignInController', ['$auth', '$state', '$mdToast', '$scope', '$user', function($auth, $state, $mdToast, $scope, $user) {
+  this.user = {};
+
+  this.submitLogin = function(user) {
+    $auth.submitLogin(user)
+      .then(function(response) {
+        if (response.role == "student") {
+          $state.go('student');
+        } else if (response.role == "company") {
+          $state.go('company');
+        } else if (response.role == "academy") {
+          $state.go('academy');
+        } else {
+          $state.go('academy');
+        }
+        $mdToast.show($mdToast.simple().textContent('Bienvenido.'));
+      })
+      .catch(function(response) {
+        $mdToast.show($mdToast.simple().textContent('Verifique su email y contraseña.'));
+      });
+  }
+}]);
+
 app.controller('CompanySignUpController',
-               ['$auth', '$http', '$mdDialog', '$location', function($auth, $http, $mdDialog, $location) {
+               ['$auth', '$http', '$mdDialog', '$state', '$scope', function($auth, $http, $mdDialog, $state, $scope) {
   this.newUser = {};
   this.companyInfo = {};
 
@@ -94,7 +189,7 @@ app.controller('CompanySignUpController',
               textContent: "Para confirmar tus datos hemos enviado un correo electrónico.",
               ok: 'Cerrar'
             })).finally(function(){
-              $location.path('/');
+              $state.go('home');
             });
           }, function(errors) {
             console.log(errors);
@@ -112,13 +207,222 @@ app.controller('CompanySignUpController',
       });
   };
 }]);
+
+app.controller('StudentSignUpController', ['$auth', '$http', '$mdDialog', '$state', '$scope', function($auth, $http, $mdDialog, $state, $scope) {
+  var self = this;
+  this.newUser = {};
+  this.studentInfo = {};
+  this.campusList = [];
+  this.majors = [];
+
+  this.loadCampus = function() {
+    return $http.get('/campus.json').then(function(response){
+      self.campusList = response.data;
+    });
+  };
+
+  this.loadMajors = function() {
+    return $http.get('/majors.json').then(function(response) {
+      self.majors = response.data;
+    });
+  };
+
+  this.submitRegistration = function(userInfo, studentInfo){
+    $auth.submitRegistration(userInfo)
+      .then(function(response) {
+        studentInfo.user_id = response.data.data.id
+        $http.post('/students.json', studentInfo)
+          .then(function(response) {
+            $mdDialog.show($mdDialog.alert({
+              title: "Mensaje de confirmación",
+              textContent: "Para confirmar tus datos hemos enviado un correo electrónico.",
+              ok: 'Cerrar'
+            })).finally(function(){
+              $state.go('home');
+            });
+          }, function(errors) {
+            console.log(errors);
+          });
+      })
+      .catch(function(response) {
+        console.log('Soy el error del registro');
+        var errors = response.data.errors.full_messages;
+        var errorString = errors.join("<br>");
+        $mdDialog.show($mdDialog.alert({
+          title: "Errores",
+          textContent: errorString,
+          ok: 'Entiendo'
+        }));
+      });
+  };
+}]);
+
+app.controller('AcademySignUpController', ['$auth', '$http', '$mdDialog', '$state', '$scope', function($auth, $http, $mdDialog, $state, $scope) {
+  var self = this;
+  this.newUser = {};
+  this.academyInfo = {};
+  this.campusList = [];
+  this.majors = [];
+
+  this.loadCampus = function() {
+    return $http.get('/campus.json').then(function(response){
+      self.campusList = response.data;
+    });
+  };
+
+  this.loadMajors = function() {
+    return $http.get('/majors.json').then(function(response) {
+      self.majors = response.data;
+    });
+  };
+
+  this.submitRegistration = function(userInfo, academyInfo){
+    $auth.submitRegistration(userInfo)
+      .then(function(response) {
+        academyInfo.user_id = response.data.data.id
+        $http.post('/students.json', academyInfo)
+          .then(function(response) {
+            $mdDialog.show($mdDialog.alert({
+              title: "Mensaje de confirmación",
+              textContent: "Para confirmar tus datos hemos enviado un correo electrónico.",
+              ok: 'Cerrar'
+            })).finally(function(){
+              $state.go('home');
+            });
+          }, function(errors) {
+            console.log(errors);
+          });
+      })
+      .catch(function(response) {
+        console.log('Soy el error del registro');
+        var errors = response.data.errors.full_messages;
+        var errorString = errors.join("<br>");
+        $mdDialog.show($mdDialog.alert({
+          title: "Errores",
+          textContent: errorString,
+          ok: 'Entiendo'
+        }));
+      });
+  };
+}]);
+
+app.controller('ProfessionalPracticeController', ['$http', '$mdToast', '$user', function($http, $mdToast, $user) {
+  var self = this;
+  this.newPractice = {};
+  this.practices = [];
+
+  this.refreshPractices = function() {
+    $user.getCompanyInfo()
+      .then(function(company) {
+        $http.get('/professional_practices.json', { params: { company_id: company.id } })
+          .then(function(response) {
+            self.practices = response.data;
+          })
+          .catch(function(error) {
+            $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error al obtener la lista de prácticas.'));
+          });
+      }, function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error al obtener la lista de prácticas.'));
+      });
+  };
+
+  this.removePractice = function(practice_id) {
+    $http.delete('/professional_practices/' + practice_id + '.json')
+      .then(function(response){
+        $mdToast.show($mdToast.simple().textContent("Eliminado."));
+        self.refreshPractices();
+      })
+      .catch(function(errors) {
+        $mdToast.show($mdToast.simple().textContent("Ha ocurrido un error."));
+      });
+  }
+
+  this.refreshPractices();
+
+  this.submitPractice = function(newPractice) {
+    $user.getCompanyInfo()
+      .then(function(company) {
+        newPractice.company_id = company.id;
+        $http.post('/professional_practices.json', newPractice)
+          .then(function(response) {
+            $mdToast.show($mdToast.simple().textContent('Se ha publicado con éxito.'));
+            self.newPractice = {}
+            self.refreshPractices();
+          })
+          .catch(function(error) {
+            $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+          });
+      }, function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+}]);
 /* End Controllers */
 
 /* Directives */
 app.directive('mainNavbar', function() {
   return {
     restrict: 'E',
-    templateUrl: "<%= asset_path('shared/navbar.html') %>"
+    templateUrl: "<%= asset_path('shared/navbar.html') %>",
+    controller: "MainNavbarController",
+    controllerAs: "mainNavbarCtrl"
   };
 });
 /* End Directives */
+
+/* Services */
+app.factory('$user', ['$rootScope', '$http', '$q', function($rootScope, $http, $q) {
+  return {
+    getUserInfo: function() {
+      return $rootScope.user || {};
+    },
+    isUserSignedIn: function() {
+      return !($rootScope.user === undefined);
+    },
+    isCompany: function() {
+      if ($rootScope.user) {
+        if ($rootScope.user.role == "company")
+          return true;
+        else
+          return false;
+      } else {
+        return false;
+      }
+    },
+    isStudent: function() {
+      if ($rootScope.user) {
+        if ($rootScope.user.role == "student")
+          return true;
+        else
+          return false;
+      } else {
+        return false;
+      }
+    },
+    isAcademy: function() {
+      if ($rootScope.user) {
+        if ($rootScope.user.role == "academy")
+          return true;
+        else if ($rootScope.user.role == "academy_chef")
+          return true;
+        else
+          return false;
+      } else {
+        return false;
+      }
+    },
+    getCompanyInfo: function() {
+      return $q(function(resolve, reject){
+        $http.get('/companies/company_belongs_to_user.json', { params: { user_id: $rootScope.user.id } })
+          .then(function(response){
+            resolve(response.data);
+          })
+          .catch(function(errors) {
+            reject(errors);
+          });
+      });
+    },
+  };
+}]);
+
+/* End Services */
