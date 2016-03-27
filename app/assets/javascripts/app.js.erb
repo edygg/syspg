@@ -12,6 +12,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$auth
       controller: "HomeController",
       controllerAs: "homeCtrl"
     })
+    .state('unverified', {
+      url: '/unverified',
+      templateUrl: "<%= asset_path('home/unverified.html') %>",
+    })
     .state('user', {
       url: '/users',
       template: '<ui-view/>',
@@ -52,11 +56,29 @@ app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$auth
     })
     .state('academy', {
       url: '/academies',
-      templateUrl: "<%= asset_path('academies/index.html') %>"
+      templateUrl: "<%= asset_path('academies/index.html') %>",
+      abstract: true,
+      controller: function($state, $user) {
+        this.isAcademicChef = $user.isAcademicChef();
+      },
+      controllerAs: 'academyCtrl'
+    })
+    .state('academy.dashboard', {
+      url: '/dashboard',
+      templateUrl: "<%= asset_path('academies/dashboard.html') %>",
+      controller: 'AcademyDashboardController',
+      controllerAs: 'academyDashboardCtrl'
+    })
+    .state('academy.general_settings', {
+      url: '/general_settings',
+      templateUrl: "<%= asset_path('academies/general_settings.html') %>",
+      controller: "GeneralSettingsController",
+      controllerAs: "generalSettingsCtrl",
     })
     .state('company', {
       url: '/companies',
       templateUrl: "<%= asset_path('companies/index.html') %>",
+      abstract: true,
       controller: function($state) {
         $state.go('company.dashboard');
       }
@@ -73,6 +95,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$auth
     })
     .state('student', {
       url: '/students',
+      abstract: true,
       templateUrl: "<%= asset_path('students/index.html') %>"
     });
   /* End Router Paths */
@@ -116,20 +139,27 @@ app.run(function($rootScope){
 /* End Run events */
 
 /* Controllers */
-app.controller('HomeController', ['$scope', '$user', '$state', function($scope, $user, $state) {
+app.controller('HomeController', ['$scope', '$user', '$state', '$auth', function($scope, $user, $state, $auth) {
   $('.slider').slider({ indicators: false });
   this.homeData = {
     options: 30,
     usersRegistered: 100
   };
-  
-  if ($user.isCompany()) {
-    $state.go('company');
-  } else if ($user.isStudent()) {
-    $state.go('student');
-  } else if ($user.isAcademy()) {
-    $state.go('academy');
-  }
+
+  $auth.validateUser()
+    .then(function(response) {
+      if ($user.isUserSignedIn() && !$user.wasVerified()) {
+        $state.go('unverified');
+      } else {
+        if ($user.isCompany()) {
+          $state.go('company.dashboard');
+        } else if ($user.isStudent()) {
+          $state.go('student.dashboard');
+        } else if ($user.isAcademicChef() || $user.isAcademic()) {
+          $state.go('academy.dashboard');
+        }
+      }
+    })
 }]);
 
 app.controller('MainNavbarController', ['$user', '$state', '$auth', '$mdToast', function($user, $state, $auth, $mdToast) {
@@ -156,16 +186,19 @@ app.controller('SignInController', ['$auth', '$state', '$mdToast', '$scope', '$u
   this.submitLogin = function(user) {
     $auth.submitLogin(user)
       .then(function(response) {
-        if (response.role == "student") {
-          $state.go('student');
-        } else if (response.role == "company") {
-          $state.go('company');
-        } else if (response.role == "academy") {
-          $state.go('academy');
+
+        if (!(response.verified == "t")) {
+          $state.go('unverified');
         } else {
-          $state.go('academy');
+          if (response.role == "student") {
+            $state.go('student.dashboard');
+          } else if (response.role == "company") {
+            $state.go('company.dashboard');
+          } else {
+            $state.go('academy.dashboard');
+          }
+          $mdToast.show($mdToast.simple().textContent('Bienvenido.'));
         }
-        $mdToast.show($mdToast.simple().textContent('Bienvenido.'));
       })
       .catch(function(response) {
         $mdToast.show($mdToast.simple().textContent('Verifique su email y contraseña.'));
@@ -357,6 +390,339 @@ app.controller('ProfessionalPracticeController', ['$http', '$mdToast', '$user', 
       });
   };
 }]);
+
+app.controller('GeneralSettingsController', ['$http', '$mdToast', '$mdDialog', function($http, $mdToast, $mdDialog) {
+  var self = this;
+  this.faculties = [];
+  this.campus = [];
+  this.subjects = [];
+
+  this.refreshFaculties = function() {
+    $http.get('/faculties.json')
+      .then(function(response){
+        self.faculties = response.data;
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Error al cargar las facultades.'));
+      });
+  };
+
+  this.refreshCampus = function() {
+    $http.get('/campus.json')
+      .then(function(response) {
+        self.campus = response.data;
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Error al cargar los campus.'));
+      });
+  };
+
+  this.refreshSubjects = function() {
+    $http.get('/subjects.json')
+      .then(function(response) {
+        self.subjects = response.data;
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Error al cargar las asignaturas.'));
+      });
+  };
+
+  this.deleteCampus = function(campusId) {
+    $http.delete('/campus/' + campusId + '.json')
+      .then(function(response) {
+        $mdToast.show($mdToast.simple().textContent('Campus eliminado.'));
+        self.refreshCampus();
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.deleteFaculty = function(facultyId) {
+    $http.delete('/faculties/' + facultyId + '.json')
+      .then(function(response) {
+        $mdToast.show($mdToast.simple().textContent('Facultad eliminada.'));
+        self.refreshFaculties();
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.deleteSubject = function(subjectId) {
+    $http.delete('/subjects/' + subjectId + '.json')
+      .then(function(response) {
+        $mdToast.show($mdToast.simple().textContent('Asignatura eliminada.'));
+        self.refreshSubjects();
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.showCampusEditDialog = function(event, campusId) {
+    $mdDialog.show({
+      controller: 'CampusController',
+      controllerAs: 'campusCtrl',
+      templateUrl: "<%= asset_path('academies/campus_dialog.html') %>",
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose: true,
+      locals: {
+        campusId: campusId
+      }
+    })
+    .then(function(campus) {
+      $http.put('/campus/' + campusId + '.json', campus)
+        .then(function(response) {
+          $mdToast.show($mdToast.simple().textContent('Campus actualizado.'));
+          self.refreshCampus();
+        })
+        .catch(function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    });
+  };
+
+  this.showFacultyEditDialog = function(event, facultyId) {
+    $mdDialog.show({
+      controller: 'FacultyController',
+      controllerAs: 'facultyCtrl',
+      templateUrl: "<%= asset_path('academies/faculty_dialog.html') %>",
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose: true,
+      locals: {
+        facultyId: facultyId
+      }
+    })
+    .then(function(faculty) {
+      $http.put('/faculties/' + facultyId + '.json', faculty)
+        .then(function(response) {
+          $mdToast.show($mdToast.simple().textContent('Facultad actualizada.'));
+          self.refreshFaculties();
+        })
+        .catch(function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    });
+  };
+
+  this.showSubjectEditDialog = function(event, subjectId) {
+    $mdDialog.show({
+      controller: 'SubjectController',
+      controllerAs: 'subjectCtrl',
+      templateUrl: "<%= asset_path('academies/subject_dialog.html') %>",
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose: true,
+      locals: {
+        subjectId: subjectId
+      }
+    })
+    .then(function(subject) {
+      $http.put('/subjects/' + subjectId + '.json', subject)
+        .then(function(response) {
+          $mdToast.show($mdToast.simple().textContent('Asignatura actualizada.'));
+          self.refreshSubjects();
+        })
+        .catch(function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    });
+  };
+
+  this.showCampusCreateDialog = function(event) {
+    $mdDialog.show({
+      controller: 'CampusController',
+      controllerAs: 'campusCtrl',
+      templateUrl: "<%= asset_path('academies/campus_dialog.html') %>",
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose: true,
+      locals: {
+        campusId: 0
+      }
+    })
+    .then(function(campus) {
+      $http.post('/campus.json', campus)
+        .then(function(response) {
+          $mdToast.show($mdToast.simple().textContent('Campus creado.'));
+          self.refreshCampus();
+        })
+        .catch(function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    });
+  };
+
+  this.showFacultyCreateDialog = function(event) {
+    $mdDialog.show({
+      controller: 'FacultyController',
+      controllerAs: 'facultyCtrl',
+      templateUrl: "<%= asset_path('academies/faculty_dialog.html') %>",
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose: true,
+      locals: {
+        facultyId: 0
+      }
+    })
+    .then(function(faculty) {
+      $http.post('/faculties.json', faculty)
+        .then(function(response) {
+          $mdToast.show($mdToast.simple().textContent('Facultad creada.'));
+          self.refreshFaculties();
+        })
+        .catch(function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    });
+  };
+
+  this.showSubjectCreateDialog = function(event) {
+    $mdDialog.show({
+      controller: 'SubjectController',
+      controllerAs: 'subjectCtrl',
+      templateUrl: "<%= asset_path('academies/subject_dialog.html') %>",
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose: true,
+      locals: {
+        subjectId: 0
+      }
+    })
+    .then(function(subject) {
+      $http.post('/subjects.json', subject)
+        .then(function(response) {
+          $mdToast.show($mdToast.simple().textContent('Asignatura creada.'));
+          self.refreshSubjects();
+        })
+        .catch(function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    });
+  };
+
+  this.refreshFaculties();
+  this.refreshCampus();
+  this.refreshSubjects();
+}]);
+
+app.controller('CampusController', ['$http', 'campusId', '$mdDialog', function($http, campusId, $mdDialog) {
+  var self = this;
+  this.campus = {};
+  this.edit = campusId != 0;
+
+  this.loadCampus = function(campusId) {
+    $http.get('/campus/' + campusId + '.json')
+      .then(function(response) {
+        self.campus = response.data;
+      })
+      .catch(function(error) {
+        self.cancel();
+      });
+  };
+
+  this.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+  this.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+
+  if (campusId != 0)
+    this.loadCampus(campusId);
+
+}]);
+
+app.controller('FacultyController', ['$http', 'facultyId', '$mdDialog', function($http, facultyId, $mdDialog) {
+  var self = this;
+  this.faculty = {};
+  this.edit = facultyId != 0;
+
+  this.loadFaculty = function(facultyId) {
+    $http.get('/faculties/' + facultyId + '.json')
+      .then(function(response) {
+        self.faculty = response.data;
+      })
+      .catch(function(error) {
+        self.cancel();
+      });
+  };
+
+  this.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+  this.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+
+  if (facultyId != 0)
+    this.loadFaculty(facultyId);
+
+}]);
+
+app.controller('SubjectController', ['$http', 'subjectId', '$mdDialog', function($http, subjectId, $mdDialog) {
+  var self = this;
+  this.subject = {};
+  this.edit = subjectId != 0;
+
+  this.loadSubject = function(subjectId) {
+    $http.get('/subjects/' + subjectId + '.json')
+      .then(function(response) {
+        self.subject = response.data;
+      })
+      .catch(function(error) {
+        self.cancel();
+      });
+  };
+
+  this.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+  this.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+
+  if (subjectId != 0)
+    this.loadSubject(subjectId);
+
+}]);
+
+app.controller('AcademyDashboardController', ['$http', '$user', '$mdToast', function($http, $user, $mdToast) {
+  var self = this;
+  this.unverified_users = {};
+
+  this.loadUnverifiedUsers = function() {
+    $user.getAcademicInfo()
+      .then(function(academic) {
+        $http.get('/user_management/unverified_users.json', { params: { campus_id: academic.campu_id, major_id: academic.major_id } })
+          .then(function(response) {
+            self.unverified_users = response.data;
+          })
+          .catch(function(errors) {
+            $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+          });
+      }, function(errors) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.verifyUser = function(user_id) {
+    $http.put('/user_management/verify_user.json', { user_id: user_id })
+      .then(function(response) {
+        $mdToast.show($mdToast.simple().textContent('Usuario verificado'));
+        self.loadUnverifiedUsers();
+      })
+  };
+
+  this.loadUnverifiedUsers();
+}]);
+
 /* End Controllers */
 
 /* Directives */
@@ -375,6 +741,9 @@ app.factory('$user', ['$rootScope', '$http', '$q', function($rootScope, $http, $
   return {
     getUserInfo: function() {
       return $rootScope.user || {};
+    },
+    wasVerified: function() {
+      return $rootScope.user.verified == "t";
     },
     isUserSignedIn: function() {
       return !($rootScope.user === undefined);
@@ -399,11 +768,19 @@ app.factory('$user', ['$rootScope', '$http', '$q', function($rootScope, $http, $
         return false;
       }
     },
-    isAcademy: function() {
+    isAcademicChef: function() {
+      if ($rootScope.user) {
+        if ($rootScope.user.role == "academy_chef")
+          return true;
+        else
+          return false;
+      } else {
+        return false;
+      }
+    },
+    isAcademic: function() {
       if ($rootScope.user) {
         if ($rootScope.user.role == "academy")
-          return true;
-        else if ($rootScope.user.role == "academy_chef")
           return true;
         else
           return false;
@@ -415,6 +792,17 @@ app.factory('$user', ['$rootScope', '$http', '$q', function($rootScope, $http, $
       return $q(function(resolve, reject){
         $http.get('/companies/company_belongs_to_user.json', { params: { user_id: $rootScope.user.id } })
           .then(function(response){
+            resolve(response.data);
+          })
+          .catch(function(errors) {
+            reject(errors);
+          });
+      });
+    },
+    getAcademicInfo: function() {
+      return $q(function(resolve, reject) {
+        $http.get('/academies/academy_belongs_to_user.json', { params: { user_id: $rootScope.user.id } })
+          .then(function(response) {
             resolve(response.data);
           })
           .catch(function(errors) {

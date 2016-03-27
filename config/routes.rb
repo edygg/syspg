@@ -1,14 +1,20 @@
 Rails.application.routes.draw do
+  resources :subjects
   resources :professional_practices
-  resources :academies
+  resources :academies do
+    get 'academy_belongs_to_user', on: :collection
+  end
   resources :students
   resources :majors
   resources :faculties
   resources :campus
   resources :companies do
-    get 'company_belongs_to_user', on: :collection 
+    get 'company_belongs_to_user', on: :collection
   end
   mount_devise_token_auth_for 'User', at: 'auth'
+
+  get 'user_management/unverified_users', to: 'user_management#unverified_users'
+  put 'user_management/verify_user', to: 'user_management#verify_user'
   # devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

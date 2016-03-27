@@ -1,0 +1,28 @@
+<md-dialog aria-label="Facultad" ng-cloak style="width: 33%">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2 ng-show="facultyCtrl.edit">Editar facultad</h2>
+      <h2 ng-hide="facultyCtrl.edit">Crear facultad</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="facultyCtrl.cancel()">
+        <md-icon md-font-set="material-icons">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout="row" layout-padding>
+      <form name="facultyCtrl.facultyForm" ng-submit="facultyCtrl.facultyForm.$valid && facultyCtrl.answer(facultyCtrl.faculty)" flex>
+        <md-input-container class="md-block" flex>
+          <label>Nombre</label>
+          <input ng-model="facultyCtrl.faculty.name" name="name" required>
+          <div ng-messages="facultyCtrl.facultyForm.name.$error">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+      </form>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button ng-click="facultyCtrl.facultyForm.$valid && facultyCtrl.answer(facultyCtrl.faculty)" ng-disabled="!facultyCtrl.facultyForm.$valid">Guardar</md-button>
+  </md-dialog-actions>
+</md-dialog>

@@ -30,12 +30,12 @@ if company_user.nil?
   company_profile = Company.create(name: 'Enterprise', phone: '22222222', web_site: 'enterprise.com.hn', contact_name: 'Edilson Fernando Gonzalez', contact_email: 'egonzalez@enterprise.com.hn', contact_phone: '89607624', contact_job_title: 'Consultor SAP', user_id: company_user.id)
 end
 
-academic_chef_user = User.where(email: "academic_chef@unitec.edu").first
+academic_chef_user = User.where(email: "academic_chef1@unitec.edu").first
 if academic_chef_user.nil?
-  academic_chef_user = User.new(email: "academic_chef@unitec.edu", password: "computacion1.", role: "academy_chef")
+  academic_chef_user = User.new(email: "academic_chef1@unitec.edu", password: "computacion1.", role: "academy_chef", verified: true)
   academic_chef_user.skip_confirmation!
   academic_chef_user.save
-  academic_chef_profile = Academy.create(name: "Juan Jefe", phone: "22467879", campu: Campu.first, major: Major.first)
+  academic_chef_profile = Academy.create(name: "Laurenn Alecxandra Cruz", phone: "22467879", campu: Campu.first, major: Major.first, user: academic_chef_user)
 end
 
 academic_user = User.where(email: "academic@unitec.edu").first
@@ -43,5 +43,50 @@ if academic_user.nil?
   academic_user = User.new(email: "academic@unitec.edu", password: "computacion1.", role: "academy")
   academic_user.skip_confirmation!
   academic_user.save
-  academic_profile = Academy.create(name: "Laurenn Cruz", phone: "55556969", campu: Campu.first, major: Major.first)
+  academic_profile = Academy.create(name: "Oscar Cruz", phone: "55556969", campu: Campu.first, major: Major.first, user: academic_user)
+end
+
+student1 = User.where(email: "amy@unitec.edu").first
+if student1.nil?
+  student1 = User.new(email: "amy@unitec.edu", password: "computacion1.", role: "student")
+  student1.skip_confirmation!
+  student1.save
+  student1_profile = Student.create(name: "Amy Gonzalez", unitec_id: "11211010", phone: "89897878", user: student1, campu: Campu.first, major: Major.first)
+end
+
+student2 = User.where(email: "angie@unitec.edu").first
+if student2.nil?
+  student2 = User.new(email: "angie@unitec.edu", password: "computacion1.", role: "student")
+  student2.skip_confirmation!
+  student2.save
+  student2_profile = Student.create(name: "Angie Gonzalez", unitec_id: "11211011", phone: "89897878", user: student2, campu: Campu.first, major: Major.first)
+end
+
+student3 = User.where(email: "brenda@unitec.edu").first
+if student3.nil?
+  student3 = User.new(email: "brenda@unitec.edu", password: "computacion1.", role: "student")
+  student3.skip_confirmation!
+  student3.save
+  student3_profile = Student.create(name: "Brenda Gonzalez", unitec_id: "11211012", phone: "89897878", user: student3, campu: Campu.first, major: Major.first)
+end
+
+student4 = User.where(email: "suany@unitec.edu").first
+if student4.nil?
+  student4 = User.new(email: "suany@unitec.edu", password: "computacion1.", role: "student")
+  student4.skip_confirmation!
+  student4.save
+  student4_profile = Student.create(name: "Suany Gonzalez", unitec_id: "11211013", phone: "89897878", user: student4, campu: Campu.first, major: Major.first)
+end
+
+
+
+if Subject.count < 6
+  Subject.destroy_all
+
+  Subject.create(name: 'Proyecto Graduación Fase 1')
+  Subject.create(name: 'Proyecto Graduación Fase 2')
+  Subject.create(name: 'Práctica Profesional Fase 1')
+  Subject.create(name: 'Práctica Profesional Fase 2')
+  Subject.create(name: 'Proyecto Graduación')
+  Subject.create(name: 'Práctica Profesional')
 end

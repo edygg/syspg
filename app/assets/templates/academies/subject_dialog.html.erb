@@ -1,0 +1,28 @@
+<md-dialog aria-label="Asignatura" ng-cloak style="width: 33%">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2 ng-show="subjectCtrl.edit">Editar asignatura</h2>
+      <h2 ng-hide="subjectCtrl.edit">Crear asignatura</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="subjectCtrl.cancel()">
+        <md-icon md-font-set="material-icons">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout="row" layout-padding>
+      <form name="subjectCtrl.subjectForm" ng-submit="subjectCtrl.subjectForm.$valid && subjectCtrl.answer(subjectCtrl.subject)" flex>
+        <md-input-container class="md-block" flex>
+          <label>Nombre</label>
+          <input ng-model="subjectCtrl.subject.name" name="name" required>
+          <div ng-messages="subjectCtrl.subjectForm.name.$error">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+      </form>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button ng-click="subjectCtrl.subjectForm.$valid && subjectCtrl.answer(subjectCtrl.subject)" ng-disabled="!subjectCtrl.subjectForm.$valid">Guardar</md-button>
+  </md-dialog-actions>
+</md-dialog>

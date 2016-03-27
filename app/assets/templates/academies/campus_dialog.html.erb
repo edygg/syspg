@@ -1,0 +1,28 @@
+<md-dialog aria-label="Editar campus" ng-cloak style="width: 33%">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2 ng-show="campusCtrl.edit">Editar campus</h2>
+      <h2 ng-hide="campusCtrl.edit">Crear campus</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="campusCtrl.cancel()">
+        <md-icon md-font-set="material-icons">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout="row" layout-padding>
+      <form name="campusCtrl.campusForm" ng-submit="campusCtrl.campusForm.$valid && campusCtrl.answer(campusCtrl.campus)" flex>
+        <md-input-container class="md-block" flex>
+          <label>Nombre</label>
+          <input ng-model="campusCtrl.campus.name" name="name" required>
+          <div ng-messages="campusCtrl.campusForm.name.$error">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+      </form>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button ng-click="campusCtrl.campusForm.$valid && campusCtrl.answer(campusCtrl.campus)" ng-disabled="!campusCtrl.campusForm.$valid">Guardar</md-button>
+  </md-dialog-actions>
+</md-dialog>

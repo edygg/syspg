@@ -4,7 +4,7 @@ class CampusController < ApplicationController
   # GET /campus
   # GET /campus.json
   def index
-    @campus = Campu.all
+    @campus = Campu.all.order(name: :asc)
   end
 
   # GET /campus/1

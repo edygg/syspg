@@ -12,6 +12,12 @@ class AcademiesController < ApplicationController
   def show
   end
 
+  # GET /academy_belongs_to_user
+  # GET /academy_belongs_to_user.json
+  def academy_belongs_to_user
+    @academy = Academy.find_by_user_id(params[:user_id])
+  end
+
   # GET /academies/new
   def new
     @academy = Academy.new

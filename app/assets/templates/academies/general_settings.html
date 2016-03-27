@@ -1,0 +1,89 @@
+<md-list style="padding-bottom: 75px">
+  <md-subheader class="md-no-sticky">Asignaturas</md-subheader>
+  <md-list-item ng-repeat="subject in generalSettingsCtrl.subjects" style="padding-left:16px">
+    <p class="md-list-item-text">{{subject.name}}</p>
+    <md-menu class="md-secondary">
+      <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+        <md-icon md-font-set="material-icons">more_vert</md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <md-button ng-click="generalSettingsCtrl.showSubjectEditDialog($event, subject.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">edit</md-icon>Editar
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="generalSettingsCtrl.deleteSubject(subject.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">delete</md-icon>Eliminar
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </md-list-item>
+  <md-divider></md-divider>
+  <md-subheader class="md-no-sticky">Campus</md-subheader>
+  <md-list-item ng-repeat="campus in generalSettingsCtrl.campus" style="padding-left:16px">
+    <p class="md-list-item-text">{{campus.name}}</p>
+    <md-menu class="md-secondary">
+      <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+        <md-icon md-font-set="material-icons">more_vert</md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <md-button ng-click="generalSettingsCtrl.showCampusEditDialog($event, campus.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">edit</md-icon>Editar
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="generalSettingsCtrl.deleteCampus(campus.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">delete</md-icon>Eliminar
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </md-list-item>
+  <md-divider></md-divider>
+  <md-subheader class="md-no-sticky">Facultades</md-subheader>
+  <md-list-item ng-repeat="faculty in generalSettingsCtrl.faculties" style="padding-left:16px">
+    <p>{{faculty.name}}</p>
+    <md-menu class="md-secondary">
+      <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+        <md-icon md-font-set="material-icons">more_vert</md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <md-button ng-click="generalSettingsCtrl.showFacultyEditDialog($event, faculty.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">edit</md-icon>Editar
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="generalSettingsCtrl.deleteFaculty(faculty.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">delete</md-icon>Eliminar
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </md-list-item>
+</md-list>
+
+<md-fab-speed-dial class="md-scale floating-bottom-right" md-direction="up">
+  <md-fab-trigger>
+    <md-button aria-label="menu" class="md-fab md-accent">
+      <md-icon font-icon-family="material-icons">add</md-icon>
+    </md-button>
+  </md-fab-trigger>
+  <md-fab-actions>
+    <md-button aria-label="Agregar asignatura" class="md-fab md-raised md-mini" ng-click="generalSettingsCtrl.showSubjectCreateDialog($event)">
+      <md-tooltip md-direction="left" md-autohide="false">Agregar asignatura</md-tooltip>
+      <md-icon font-icon-family="material-icons">local_library</md-icon>
+    </md-button>
+    <md-button aria-label="Agregar facultad" class="md-fab md-raised md-mini" ng-click="generalSettingsCtrl.showFacultyCreateDialog($event)">
+      <md-tooltip md-direction="left" md-autohide="false">Agregar facultad</md-tooltip>
+      <md-icon font-icon-family="material-icons">school</md-icon>
+    </md-button>
+    <md-button aria-label="Agregar campus" class="md-fab md-raised md-mini" ng-click="generalSettingsCtrl.showCampusCreateDialog($event)">
+      <md-tooltip md-direction="left" md-autohide="false">Agregar campus</md-tooltip>
+      <md-icon font-icon-family="material-icons">account_balance</md-icon>
+    </md-button>
+  </md-fab-actions>
+</md-fab-speed-dial>

@@ -9,8 +9,11 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable
-  
+
   has_one :company
   has_one :student
   has_one :academy
+
+  scope :unverified, -> { where(verified: false) }
+  scope :verified, -> { where(verified: true) }
 end
