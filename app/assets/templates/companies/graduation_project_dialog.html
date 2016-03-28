@@ -1,0 +1,51 @@
+<md-dialog aria-label="Proyecto de graduación" ng-cloak style="width: 80%">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2 ng-show="professionalPracticeCtrl.edit">Editar proyecto de graduación</h2>
+      <h2 ng-hide="professionalPracticeCtrl.edit">Crear proyecto de graduación</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="graduationProjectCtrl.cancel()">
+        <md-icon md-font-set="material-icons">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout="row" layout-padding>
+      <form name="graduationProjectCtrl.graduationProjectForm" ng-submit="graduationProjectCtrl.graduationProjectForm.$valid && graduationProjectCtrl.answer(graduationProjectCtrl.graduationProject)" flex>
+        <div layout="row" layout-wrap>
+          <md-input-container class="md-block" flex="33">
+            <label>Título o nombre</label>
+            <input ng-model="graduationProjectCtrl.graduationProject.name" name="name" required>
+            <div ng-messages="graduationProjectCtrl.graduationProjectForm.name.$error">
+              <div ng-message="required">Es requerido.</div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block" flex="33">
+            <label>Objetivo</label>
+            <input ng-model="graduationProjectCtrl.graduationProject.objective" name="objective" required>
+            <div ng-messages="graduationProjectCtrl.graduationProjectForm.objective.$error">
+              <div ng-message="required">Es requerido.</div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block" flex="50">
+            <label>Descripción</label>
+            <textarea ng-model="graduationProjectCtrl.graduationProject.description" name="description" required></textarea>
+            <div ng-messages="graduationProjectCtrl.graduationProjectForm.description.$error">
+              <div ng-message="required">Es requerido.</div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block" flex="50">
+            <label>Descripción</label>
+            <textarea ng-model="graduationProjectCtrl.graduationProject.requirements" name="requirements" required></textarea>
+            <div ng-messages="graduationProjectCtrl.graduationProjectForm.requirements.$error">
+              <div ng-message="required">Es requerido.</div>
+            </div>
+          </md-input-container>
+        </div>
+      </form>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button ng-click="graduationProjectCtrl.graduationProjectForm.$valid && graduationProjectCtrl.answer(graduationProjectCtrl.graduationProject)" ng-disabled="!graduationProjectCtrl.graduationProjectForm.$valid">Guardar</md-button>
+  </md-dialog-actions>
+</md-dialog>

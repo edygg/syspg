@@ -78,20 +78,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$auth
     .state('company', {
       url: '/companies',
       templateUrl: "<%= asset_path('companies/index.html') %>",
-      abstract: true,
-      controller: function($state) {
-        $state.go('company.dashboard');
-      }
+      abstract: true
     })
     .state('company.dashboard', {
       url: '/dashboard',
       templateUrl: "<%= asset_path('companies/dashboard.html') %>"
     })
-    .state('company.professional_practice', {
-      url: '/professional_practices',
-      templateUrl: "<%= asset_path('companies/professional_practices.html') %>",
-      controller: "ProfessionalPracticeController",
-      controllerAs: "professionalPracticeCtrl"
+    .state('company.publish', {
+      url: '/publish',
+      templateUrl: "<%= asset_path('companies/publish.html') %>",
+      controller: "PublishController",
+      controllerAs: "publishCtrl"
     })
     .state('student', {
       url: '/students',
@@ -362,58 +359,6 @@ app.controller('AcademySignUpController', ['$auth', '$http', '$mdDialog', '$stat
           textContent: errorString,
           ok: 'Entiendo'
         }));
-      });
-  };
-}]);
-
-app.controller('ProfessionalPracticeController', ['$http', '$mdToast', '$user', function($http, $mdToast, $user) {
-  var self = this;
-  this.newPractice = {};
-  this.practices = [];
-
-  this.refreshPractices = function() {
-    $user.getCompanyInfo()
-      .then(function(company) {
-        $http.get('/professional_practices.json', { params: { company_id: company.id } })
-          .then(function(response) {
-            self.practices = response.data;
-          })
-          .catch(function(error) {
-            $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error al obtener la lista de prácticas.'));
-          });
-      }, function(error) {
-        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error al obtener la lista de prácticas.'));
-      });
-  };
-
-  this.removePractice = function(practice_id) {
-    $http.delete('/professional_practices/' + practice_id + '.json')
-      .then(function(response){
-        $mdToast.show($mdToast.simple().textContent("Eliminado."));
-        self.refreshPractices();
-      })
-      .catch(function(errors) {
-        $mdToast.show($mdToast.simple().textContent("Ha ocurrido un error."));
-      });
-  }
-
-  this.refreshPractices();
-
-  this.submitPractice = function(newPractice) {
-    $user.getCompanyInfo()
-      .then(function(company) {
-        newPractice.company_id = company.id;
-        $http.post('/professional_practices.json', newPractice)
-          .then(function(response) {
-            $mdToast.show($mdToast.simple().textContent('Se ha publicado con éxito.'));
-            self.newPractice = {}
-            self.refreshPractices();
-          })
-          .catch(function(error) {
-            $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
-          });
-      }, function(error) {
-        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
       });
   };
 }]);
@@ -799,6 +744,230 @@ app.controller('CompanyProfileController', ['$http', '$stateParams', '$mdToast',
   };
 
   this.loadProfile();
+}]);
+
+app.controller('PublishController', ['$http', '$mdToast', '$user', '$mdDialog', function($http, $mdToast, $user, $mdDialog) {
+  var self = this;
+  this.professionalPractices = [];
+  this.graduationProjects = [];
+
+  this.loadProfessionalPractices = function() {
+    $user.getCompanyInfo()
+      .then(function(company) {
+        $http.get('/professional_practices.json', { params: { company_id: company.id } })
+          .then(function(response) {
+            self.professionalPractices = response.data;
+          })
+          .catch(function(errors) {
+            $mdToast.show($mdToast.simple().textContent("Ha ocurrido un error."));
+          });
+      }, function(error) {
+          $mdToast.show($mdToast.simple().textContent("Ha ocurrido un error."));
+      });
+  };
+
+  this.loadGraduationProjects = function() {
+    $user.getCompanyInfo()
+      .then(function(company) {
+        $http.get('/graduation_projects.json', { params: { company_id: company.id } })
+          .then(function(response) {
+            self.graduationProjects = response.data;
+          })
+          .catch(function(error) {
+            $mdToast.show($mdToast.simple().textConten('Ha ocurrido un error.'));
+          });
+      }, function(error) {
+        $mdToast.show($mdToast.simple().textConten('Ha ocurrido un error.'));
+      });
+  };
+
+  this.deleteProfessionalPractice = function(professionalPracticeId) {
+    $http.delete('/professional_practices/' + professionalPracticeId + '.json')
+      .then(function(response) {
+        $mdToast.show($mdToast.simple().textContent('Práctica profesional eliminada.'));
+        self.loadProfessionalPractices();
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.deleteGraduationProject = function(graduationProjectId) {
+    $http.delete('/graduation_projects/' + graduationProjectId + '.json')
+      .then(function(response) {
+        $mdToast.show($mdToast.simple().textContent('Proyecto de Graduación eliminado.'));
+        self.loadGraduationProjects();
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.showProfessionalPracticeCreateDialog = function(event) {
+    $mdDialog.show({
+      controller: 'ProfessionalPracticeController',
+      controllerAs: 'professionalPracticeCtrl',
+      templateUrl: "<%= asset_path('companies/professional_practice_dialog.html') %>",
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose: true,
+      locals: {
+        professionalPracticeId: 0
+      }
+    })
+    .then(function(professionalPractice) {
+      $user.getCompanyInfo()
+        .then(function(company) {
+          professionalPractice.company_id = company.id;
+          $http.post('/professional_practices.json', professionalPractice)
+            .then(function(response) {
+              $mdToast.show($mdToast.simple().textContent("Práctica profesional publicada."));
+              self.loadProfessionalPractices();
+            })
+            .catch(function(error) {
+              $mdToast.show($mdToast.simple().textContent("Ha ocurrido un error."));
+            });
+        }, function(error) {
+          $mdToast.show($mdToast.simple().textContent("Ha ocurrido un error."));
+        });
+    });
+  };
+
+  this.showGraduationProjectCreateDialog = function(event) {
+    $mdDialog.show({
+      controller: 'GraduationProjectController',
+      controllerAs: 'graduationProjectCtrl',
+      templateUrl: "<%= asset_path('companies/graduation_project_dialog.html') %>",
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose: true,
+      locals: {
+        graduationProjectId: 0
+      }
+    })
+    .then(function(graduationProject) {
+      $user.getCompanyInfo()
+        .then(function(company) {
+          graduationProject.company_id = company.id;
+          $http.post('/graduation_projects.json', graduationProject)
+            .then(function(response) {
+              $mdToast.show($mdToast.simple().textContent('Proyecto de graduación publicado.'));
+              self.loadGraduationProjects();
+            })
+            .catch(function(error) {
+              $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+            });
+        }, function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    });
+  };
+
+  this.showProfessionalPracticeEditDialog = function(event, professionalPracticeId) {
+    $mdDialog.show({
+      controller: 'ProfessionalPracticeController',
+      controllerAs: 'professionalPracticeCtrl',
+      templateUrl: "<%= asset_path('companies/professional_practice_dialog.html') %>",
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose: true,
+      locals: {
+        professionalPracticeId: professionalPracticeId
+      }
+    })
+    .then(function(professionalPractice) {
+      $http.put('/professional_practices/' + professionalPracticeId + '.json', professionalPractice)
+        .then(function(response) {
+          $mdToast.show($mdToast.simple().textContent('Cambios guardados.'));
+        })
+        .catch(function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    });
+  };
+
+  this.showGraduationProjectEditDialog = function(event, graduationProjectId) {
+    $mdDialog.show({
+      controller: 'GraduationProjectController',
+      controllerAs: 'graduationProjectCtrl',
+      templateUrl: "<%= asset_path('companies/graduation_project_dialog.html') %>",
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose: true,
+      locals: {
+        graduationProjectId: graduationProjectId
+      }
+    })
+    .then(function(graduationProject) {
+      $http.put('/graduation_projects/' + graduationProjectId + '.json', graduationProject)
+        .then(function(response) {
+        $mdToast.show($mdToast.simple().textContent('Proyecto de graduación publicado.'));
+        self.loadGraduationProjects();
+      })
+        .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+    });
+  };
+
+  this.loadProfessionalPractices();
+  this.loadGraduationProjects();
+}]);
+
+app.controller('ProfessionalPracticeController', ['$http', 'professionalPracticeId', '$mdDialog', function($http, professionalPracticeId, $mdDialog) {
+  var self = this;
+  this.professionalPractice = {};
+  this.edit = professionalPracticeId != 0;
+
+  this.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+  this.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+
+  this.loadProfessionalPractice = function(professionalPracticeId) {
+    $http.get('/professional_practices/' + professionalPracticeId + '.json')
+      .then(function(response) {
+        self.professionalPractice = response.data;
+      })
+      .catch(function(error) {
+        self.cancel();
+      });
+  };
+
+  if (professionalPracticeId != 0)
+    this.loadProfessionalPractice(professionalPracticeId);
+
+}]);
+
+app.controller('GraduationProjectController', ['$http', 'graduationProjectId', '$mdDialog', function($http, graduationProjectId, $mdDialog) {
+  var self = this;
+  this.graduationProject = {};
+  this.edit = graduationProjectId != 0;
+
+  this.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+  this.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+
+  this.loadGraduationProject = function(graduationProjectId) {
+    $http.get('/graduation_projects/' + graduationProjectId + '.json')
+      .then(function(response) {
+        self.graduationProject = response.data;
+      })
+      .catch(function(error) {
+        self.cancel();
+      });
+  };
+
+  if (graduationProjectId != 0)
+    this.loadGraduationProject(graduationProjectId);
+
 }]);
 
 /* End Controllers */

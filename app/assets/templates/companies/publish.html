@@ -1,0 +1,77 @@
+<md-list>
+  <md-subheader class="md-no-sticky">Practicas profesionales publicadas</md-subheader>
+  <md-list-item ng-show="publishCtrl.professionalPractices.length == 0">
+    No hay prácticas publicadas.
+  </md-list-item>
+
+  <md-list-item ng-repeat="professionalPractice in publishCtrl.professionalPractices" class="md-2-line" style="padding-left:16px">
+    <div class="md-list-item-text" layout="column">
+      <h3>{{professionalPractice.area}} - {{professionalPractice.charge}}</h3>
+      <p>{{professionalPractice.objective}}</p>
+    </div>
+    <md-menu class="md-secondary">
+      <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+        <md-icon md-font-set="material-icons">more_vert</md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <md-button ng-click="publishCtrl.showProfessionalPracticeEditDialog($event, professionalPractice.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">edit</md-icon>Editar
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="publishCtrl.deleteProfessionalPractice(professionalPractice.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">delete</md-icon>Eliminar
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </md-list-item>
+  <md-divider></md-divider>
+  <md-subheader class="md-no-sticky">Proyectos de graduación publicados</md-subheader>
+  <md-list-item ng-show="publishCtrl.graduationProjects.length == 0">
+    No hay proyectos publicados.
+  </md-list-item>
+  <md-list-item ng-repeat="graduationProject in publishCtrl.graduationProjects" class="md-2-line" style="padding-left:16px">
+    <div class="md-list-item-text" layout="column">
+      <h3>{{graduationProject.name}}</h3>
+      <p>{{graduationProject.objective}}</p>
+    </div>
+    <md-menu class="md-secondary">
+      <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+        <md-icon md-font-set="material-icons">more_vert</md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <md-button ng-click="publishCtrl.showGraduationProjectEditDialog($event, graduationProject.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">edit</md-icon>Editar
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="publishCtrl.deleteGraduationProject(graduationProject.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">delete</md-icon>Eliminar
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </md-list-item>
+
+</md-list>
+
+<md-fab-speed-dial class="md-scale floating-bottom-right" md-direction="up">
+  <md-fab-trigger>
+    <md-button aria-label="menu" class="md-fab md-accent">
+      <md-icon font-icon-family="material-icons">add</md-icon>
+    </md-button>
+  </md-fab-trigger>
+  <md-fab-actions>
+    <md-button aria-label="Agregar asignatura" class="md-fab md-raised md-mini" ng-click="publishCtrl.showProfessionalPracticeCreateDialog($event)">
+      <md-tooltip md-direction="left" md-autohide="false">Nueva práctica profesional</md-tooltip>
+      <md-icon font-icon-family="material-icons">business</md-icon>
+    </md-button>
+    <md-button aria-label="Agregar facultad" class="md-fab md-raised md-mini" ng-click="publishCtrl.showGraduationProjectCreateDialog($event)">
+      <md-tooltip md-direction="left" md-autohide="false">Nuevo proyecto de graduación</md-tooltip>
+      <md-icon font-icon-family="material-icons">build</md-icon>
+    </md-button>
+  </md-fab-actions>
+</md-fab-speed-dial>
