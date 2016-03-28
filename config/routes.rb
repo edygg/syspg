@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   get 'user_management/unverified_users', to: 'user_management#unverified_users'
   put 'user_management/verify_user', to: 'user_management#verify_user'
+  get 'user_management/get_profile_info', to: 'user_management#get_profile_info'
   # devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -6,7 +6,7 @@
       </md-list-item>
 
       <subheader class="md-no-sticky" ng-show="academyDashboardCtrl.unverified_users.companies.length > 0">Empresas</subheader>
-      <md-list-item class="md-2-line" ng-repeat="company in academyDashboardCtrl.unverified_users.companies">
+      <md-list-item class="md-2-line" ng-repeat="company in academyDashboardCtrl.unverified_users.companies" ui-sref="profile.company({user_id: company.user_id})">
         <md-icon md-font-library="material-icons" class="md-avatar">business</md-icon>
         <div class="md-list-item-text" layout="column">
           <h3>{{company.name}}</h3>
@@ -14,10 +14,10 @@
         </div>
         <md-button class="md-secondary md-accent" ng-click="academyDashboardCtrl.verifyUser(company.user_id)">Verificar</md-button>
       </md-list-item>
-      <md-divider ng-show="academyDashboardCtrl.unverified_users.companies.length > 0"></md-divider>
+      <md-divider ng-show="academyDashboardCtrl.unverified_users.students.length > 0"></md-divider>
 
       <subheader class="md-no-sticky" ng-show="academyDashboardCtrl.unverified_users.students.length > 0">Estudiantes</subheader>
-      <md-list-item class="md-3-line" ng-repeat="student in academyDashboardCtrl.unverified_users.students">
+      <md-list-item class="md-3-line" ng-repeat="student in academyDashboardCtrl.unverified_users.students" ui-sref="profile.student({user_id: student.user_id})">
         <md-icon md-font-library="material-icons" class="md-avatar">face</md-icon>
         <div class="md-list-item-text" layout="column">
           <h3>{{student.name}}</h3>
@@ -26,10 +26,10 @@
         </div>
         <md-button class="md-secondary md-accent" ng-click="academyDashboardCtrl.verifyUser(student.user_id)">Verificar</md-button>
       </md-list-item>
-      <md-divider ng-show="academyDashboardCtrl.unverified_users.students.length > 0"></md-divider>
+      <md-divider ng-show="academyDashboardCtrl.unverified_users.academics.length > 0"></md-divider>
 
       <subheader class="md-no-sticky" ng-show="academyDashboardCtrl.unverified_users.academics.length > 0">Académicos</subheader>
-      <md-list-item class="md-2-line" ng-repeat="academic in academyDashboardCtrl.unverified_users.academics">
+      <md-list-item class="md-2-line" ng-repeat="academic in academyDashboardCtrl.unverified_users.academics" ui-sref="profile.academic({user_id: academic.user_id})">
         <md-icon md-font-library="material-icons" class="md-avatar">school</md-icon>
         <div class="md-list-item-text" layout="column">
           <h3>{{academic.name}}</h3>

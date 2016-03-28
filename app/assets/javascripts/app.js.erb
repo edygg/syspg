@@ -97,6 +97,33 @@ app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$auth
       url: '/students',
       abstract: true,
       templateUrl: "<%= asset_path('students/index.html') %>"
+    })
+    .state('student.dashboard', {
+      url: '/dashboard',
+      templateUrl: "<%= asset_path('students/dashboard.html') %>"
+    })
+    .state('profile', {
+      url: '/profiles',
+      templateUrl: "<%= asset_path('profiles/profile.html') %>",
+      abstract: true,
+    })
+    .state('profile.student', {
+      url: '/student/{user_id:int}',
+      templateUrl: "<%= asset_path('profiles/student.html') %>",
+      controller: 'StudentProfileController',
+      controllerAs: 'studentProfileCtrl'
+    })
+    .state('profile.academic', {
+      url: '/academic/{user_id:int}',
+      templateUrl: "<%= asset_path('profiles/academic.html') %>",
+      controller: 'AcademicProfileController',
+      controllerAs: 'academicProfileCtrl'
+    })
+    .state('profile.company', {
+      url: '/company/{user_id:int}',
+      templateUrl: "<%= asset_path('profiles/company.html') %>",
+      controller: 'CompanyProfileController',
+      controllerAs: 'companyProfileCtrl'
     });
   /* End Router Paths */
 
@@ -721,6 +748,57 @@ app.controller('AcademyDashboardController', ['$http', '$user', '$mdToast', func
   };
 
   this.loadUnverifiedUsers();
+}]);
+
+app.controller('StudentProfileController', ['$http', '$stateParams', '$mdToast', function($http, $stateParams, $mdToast) {
+  var self = this;
+  this.student = {};
+
+  this.loadProfile = function() {
+    $http.get('/user_management/get_profile_info.json', { params: { user_id: $stateParams.user_id } })
+      .then(function(response) {
+        self.student = response.data;
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent("Ha ocurrido un error."));
+      });
+  };
+
+  this.loadProfile();
+}]);
+
+app.controller('AcademicProfileController', ['$http', '$stateParams', '$mdToast', function($http, $stateParams, $mdToast) {
+  var self = this;
+  this.academic = {};
+
+  this.loadProfile = function() {
+    $http.get('/user_management/get_profile_info.json', { params: { user_id: $stateParams.user_id } })
+      .then(function(response) {
+        self.academic = response.data;
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent("Ha ocurrido un error."));
+      });
+  };
+
+  this.loadProfile();
+}]);
+
+app.controller('CompanyProfileController', ['$http', '$stateParams', '$mdToast', function($http, $stateParams, $mdToast) {
+  var self = this;
+  this.company = {};
+
+  this.loadProfile = function() {
+    $http.get('/user_management/get_profile_info.json', { params: { user_id: $stateParams.user_id } })
+      .then(function(response) {
+        self.company = response.data;
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent("Ha ocurrido un error."));
+      });
+  };
+
+  this.loadProfile();
 }]);
 
 /* End Controllers */

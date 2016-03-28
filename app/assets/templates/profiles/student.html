@@ -1,0 +1,53 @@
+<div layout="row" layout-padding>
+  <span flex></span>
+  <div flex="40">
+    <h1 class="md-display-2">{{studentProfileCtrl.student.name}}</h1>
+    <md-list>
+      <md-divider></md-divider>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">credit_card</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{studentProfileCtrl.student.unitec_id}}</h3>
+          <p>Número de cuenta</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">phone</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{studentProfileCtrl.student.phone}}</h3>
+          <p>Teléfono</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">email</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{studentProfileCtrl.student.email}}</h3>
+          <p>Email</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">school</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{studentProfileCtrl.student.campus}}</h3>
+          <p>Campus</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">local_library</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{studentProfileCtrl.student.major}}</h3>
+          <p>Carrera</p>
+        </div>
+      </md-list-item>
+
+      <md-divider></md-divider>
+
+    </md-list>
+  </div>
+  <span flex></span>
+</div>

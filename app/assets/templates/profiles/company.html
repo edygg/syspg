@@ -1,0 +1,70 @@
+<div layout="row" layout-padding>
+  <span flex></span>
+  <div flex="40">
+    <h1 class="md-display-2">{{companyProfileCtrl.company.name}}</h1>
+    <md-list>
+      <md-divider></md-divider>
+      <md-subheader class="md-no-sticky">Información de la compañía</md-subheader>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">phone</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{companyProfileCtrl.company.phone}}</h3>
+          <p>Teléfono</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">email</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{companyProfileCtrl.company.email}}</h3>
+          <p>Email</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">http</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{companyProfileCtrl.company.web_site}}</h3>
+          <p>Sitio web</p>
+        </div>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-subheader class="md-no-sticky">Contacto en la compañía</md-subheader>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">face</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{companyProfileCtrl.company.contact.name}}</h3>
+          <p>Nombre del contacto</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">email</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{companyProfileCtrl.company.contact.email}}</h3>
+          <p>Email del contacto</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">phone</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{companyProfileCtrl.company.contact.phone}}</h3>
+          <p>Teléfono del contacto</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">business</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{companyProfileCtrl.company.contact.job_title}}</h3>
+          <p>Puestro de trabajo del contacto</p>
+        </div>
+      </md-list-item>
+      <md-divider></md-divider>
+    </md-list>
+  </div>
+  <span flex></span>
+</div>

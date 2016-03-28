@@ -1,0 +1,46 @@
+<div layout="row" layout-padding>
+  <span flex></span>
+  <div flex="40">
+    <h1 class="md-display-2">{{academicProfileCtrl.academic.name}}</h1>
+    <h2 class="md-title">{{academicProfileCtrl.academic.academic_type == 'academy' ? 'Asesor académico' : 'Jefe académico'}}</h2>
+    <md-list>
+      <md-divider></md-divider>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">phone</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{academicProfileCtrl.academic.phone}}</h3>
+          <p>Teléfono</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">email</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{academicProfileCtrl.academic.email}}</h3>
+          <p>Email</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">school</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{academicProfileCtrl.academic.campus}}</h3>
+          <p>Campus</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item class="md-2-line">
+        <md-icon md-font-icon="material-icons">local_library</md-icon>
+        <div class="md-list-item-text">
+          <h3>{{academicProfileCtrl.academic.major}}</h3>
+          <p>Carrera</p>
+        </div>
+      </md-list-item>
+
+      <md-divider></md-divider>
+
+    </md-list>
+  </div>
+  <span flex></span>
+</div>
