@@ -2,8 +2,8 @@
   <div class="md-toolbar-tools">
     <md-button class="md-icon-button" ui-sref="home" aria-label="Inicio"><%= image_tag 'unitec-logo.png', id: 'unitec-logo' %></md-button>
     <span flex></span>
-    <md-button aria-label="Prácticas">Prácticas</md-button>
-    <md-button aria-label="Proyectos">Proyectos</md-button>
+    <md-button aria-label="Prácticas" ui-sref="professional_practices">Prácticas</md-button>
+    <md-button aria-label="Proyectos" ui-sref="graduation_projects">Proyectos</md-button>
     <md-button aria-label="Entrar" ng-hide="mainNavbarCtrl.isUserSignedIn" ui-sref="user.sign_in">Entrar</md-button>
     <md-menu>
       <md-button aria-label="Presione para ver las opciones de usuario" ng-show="mainNavbarCtrl.isUserSignedIn" ng-click="mainNavbarCtrl.openUserMenu($mdOpenMenu, $event)">{{mainNavbarCtrl.userInfo.email}}</md-button>
@@ -11,7 +11,6 @@
         <md-button ng-click="mainNavbarCtrl.signOutUser()" md-menu-align-target>Cerrar sesión</md-button>
       </md-menu-content>
     </md-menu>
-
     <md-button class="md-icon-button" aria-label="Preguntas Frecuentes">
       <md-icon md-font-library="material-icons">help</md-icon>
     </md-button>

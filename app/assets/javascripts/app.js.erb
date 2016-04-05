@@ -12,6 +12,12 @@ app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$auth
       controller: "HomeController",
       controllerAs: "homeCtrl"
     })
+    .state('professional_practices',{
+      url: '/professional_practices',
+      templateUrl: "<%= asset_path('home/professional_practices.html') %>",
+      controller: "ProfessionalPracticeSearchController",
+      controllerAs: "searchCtrl"
+    })
     .state('unverified', {
       url: '/unverified',
       templateUrl: "<%= asset_path('home/unverified.html') %>",
@@ -74,6 +80,12 @@ app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$auth
       templateUrl: "<%= asset_path('academies/general_settings.html') %>",
       controller: "GeneralSettingsController",
       controllerAs: "generalSettingsCtrl",
+    })
+    .state('academy.faqs', {
+      url: '/faqs',
+      templateUrl: "<%= asset_path('academies/faqs.html') %>",
+      controller: "FaqsController",
+      controllerAs: "faqsCtrl",
     })
     .state('company', {
       url: '/companies',
@@ -774,7 +786,7 @@ app.controller('PublishController', ['$http', '$mdToast', '$user', '$mdDialog', 
             self.graduationProjects = response.data;
           })
           .catch(function(error) {
-            $mdToast.show($mdToast.simple().textConten('Ha ocurrido un error.'));
+            $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
           });
       }, function(error) {
         $mdToast.show($mdToast.simple().textConten('Ha ocurrido un error.'));
@@ -916,8 +928,13 @@ app.controller('PublishController', ['$http', '$mdToast', '$user', '$mdDialog', 
 
 app.controller('ProfessionalPracticeController', ['$http', 'professionalPracticeId', '$mdDialog', function($http, professionalPracticeId, $mdDialog) {
   var self = this;
-  this.professionalPractice = {};
+  this.professionalPractice = { selected_majors: [] };
   this.edit = professionalPracticeId != 0;
+
+  //chips variables
+  this.selectedItem = null;
+  this.searchText = null;
+  this.majors = [];
 
   this.cancel = function() {
     $mdDialog.cancel();
@@ -937,15 +954,49 @@ app.controller('ProfessionalPracticeController', ['$http', 'professionalPractice
       });
   };
 
+  this.loadMajors = function() {
+    $http.get('/majors.json')
+      .then(function(response) {
+        self.majors = response.data.map(function(major) { major._lowername = major.name.toLowerCase(); return major; });
+      })
+      .catch(function(error) {
+        self.cancel();
+      });
+  };
+
+  this.querySearch = function(query) {
+    var results = query ? self.majors.filter(self.createFilterFor(query)) : [];
+    return results;
+  };
+
+  this.createFilterFor = function(query) {
+    var lowercaseQuery = angular.lowercase(query);
+    return function(major) {
+      return major._lowername.indexOf(lowercaseQuery) === 0
+    };
+  };
+
+  this.transformChip = function(chip) {
+    console.log(chip);
+    return chip;
+  };
+
   if (professionalPracticeId != 0)
     this.loadProfessionalPractice(professionalPracticeId);
+
+  this.loadMajors();
 
 }]);
 
 app.controller('GraduationProjectController', ['$http', 'graduationProjectId', '$mdDialog', function($http, graduationProjectId, $mdDialog) {
   var self = this;
-  this.graduationProject = {};
+  this.graduationProject = { selected_majors: [] };
   this.edit = graduationProjectId != 0;
+
+  //chips variables
+  this.selectedItem = null;
+  this.searchText = null;
+  this.majors = [];
 
   this.cancel = function() {
     $mdDialog.cancel();
@@ -965,9 +1016,94 @@ app.controller('GraduationProjectController', ['$http', 'graduationProjectId', '
       });
   };
 
+  this.loadMajors = function() {
+    $http.get('/majors.json')
+      .then(function(response) {
+        self.majors = response.data.map(function(major) { major._lowername = major.name.toLowerCase(); return major; });
+      })
+      .catch(function(error) {
+        self.cancel();
+      });
+  };
+
+  this.querySearch = function(query) {
+    var results = query ? self.majors.filter(self.createFilterFor(query)) : [];
+    return results;
+  };
+
+  this.createFilterFor = function(query) {
+    var lowercaseQuery = angular.lowercase(query);
+    return function(major) {
+      return major._lowername.indexOf(lowercaseQuery) === 0
+    };
+  };
+
+  this.transformChip = function(chip) {
+    return chip;
+  };
+
   if (graduationProjectId != 0)
     this.loadGraduationProject(graduationProjectId);
+  this.loadMajors();
+}]);
 
+app.controller('ProfessionalPracticeSearchController', ['$http', '$mdToast', '$user', function($http, $mdToast, $user) {
+  var self = this;
+  this.searchTerms = { majors: [] };
+
+  // Chips variables
+  this.selectedItem = null;
+  this.searchText = null;
+  this.majors = [];
+
+  this.loadMajors = function() {
+    $http.get('/majors.json')
+      .then(function(response) {
+        self.majors = response.data.map(function(major) { major._lowername = major.name.toLowerCase(); return major; });
+      })
+      .catch(function(error) {
+        self.cancel();
+      });
+  };
+
+  this.querySearch = function(query) {
+    var results = query ? self.majors.filter(self.createFilterFor(query)) : [];
+    return results;
+  };
+
+  this.createFilterFor = function(query) {
+    var lowercaseQuery = angular.lowercase(query);
+    return function(major) {
+      return major._lowername.indexOf(lowercaseQuery) === 0
+    };
+  };
+
+  this.transformChip = function(chip) {
+    return chip;
+  };
+
+  this.loadMajors();
+}]);
+
+app.controller('FaqsController', ['$http', '$mdDialog', '$mdToast', function($http, $mdDialog, $mdToast) {
+  var self = this;
+  this.faqs = [];
+
+  this.loadFaqs = function() {
+    $http.get('/frequently_asked_questions')
+      .then(function(reponse) {
+        self.faqs = response.data;
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error'));
+      });
+  };
+
+  this.showFaqCreateDialog = function(event) {
+    
+  };
+
+  this.loadFaqs();
 }]);
 
 /* End Controllers */

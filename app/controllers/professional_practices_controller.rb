@@ -25,6 +25,9 @@ class ProfessionalPracticesController < ApplicationController
   # POST /professional_practices.json
   def create
     @professional_practice = ProfessionalPractice.new(professional_practice_params)
+    params[:selected_majors].each do |major|
+      @professional_practice.majors << Major.find_by_id(major[:id])
+    end
 
     respond_to do |format|
       if @professional_practice.save

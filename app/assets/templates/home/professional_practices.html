@@ -1,0 +1,34 @@
+<main-navbar></main-navbar>
+<div layout="row" layout-padding>
+  <h2 class="md-title">Seleccione la(s) carreras por las que desea filtrar y algún término de búsqueda</h2>
+</div>
+<div layout="row" layout-padding>
+  <div flex>
+    <md-chips ng-model="searchCtrl.searchTerms.majors" md-autocomplete-snap md-transform-chip="searchCtrl.transformChip($chip)" md-require-match="true">
+      <md-autocomplete
+          md-selected-item="searchCtrl.selectedItem"
+          md-search-text="searchCtrl.searchText"
+          md-items="item in searchCtrl.querySearch(searchCtrl.searchText)"
+          md-item-text="item.name"
+          placeholder="Carreras">
+        <span md-highlight-text="searchCtrl.searchText">{{item.name}}</span>
+      </md-autocomplete>
+      <md-chip-template>
+        <span>
+          <strong>{{$chip.name}}</strong>
+        </span>
+      </md-chip-template>
+    </md-chips>
+  </div>
+  <div flex>
+    <md-input-container>
+      <label>Buscar...</label>
+      <input ng-model="searchCtrl.searchTerms.text">
+    </md-input-container>
+    <md-button class="md-accent md-raised">
+      Buscar
+    </md-button>
+  </div>
+</div>
+
+<pre>{{searchCtrl.searchTerms}}</pre>

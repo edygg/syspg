@@ -45,6 +45,23 @@
             <label>Observaciones</label>
             <textarea ng-model="professionalPracticeCtrl.professionalPractice.observation" name="practiceObservation"></textarea>
           </md-input-container>
+
+          <md-chips style="margin-bottom: 30px;" ng-hide="professionalPracticeCtrl.edit" ng-model="professionalPracticeCtrl.professionalPractice.selected_majors" md-transform-chip="professionalPracticeCtrl.transformChip($chip)" md-autocomplete-snap md-require-match="true" flex="100">
+            <md-autocomplete
+              md-selected-item="professionalPracticeCtrl.selectedItem"
+              md-search-text="professionalPracticeCtrl.searchText"
+              md-items="item in professionalPracticeCtrl.querySearch(professionalPracticeCtrl.searchText)"
+              md-item-text="item.name"
+              placeholder="Carreras">
+              <span md-highlight-text="professionalPracticeCtrl.searchText">{{item.name}}</span>
+            </md-autocomplete>
+            <md-chip-template>
+              <span>
+                <strong>{{$chip.name}}</strong>
+              </span>
+            </md-chip-template>
+          </md-chips>
+
           <div class="md-block" flex="33">
             <md-checkbox ng-model="professionalPracticeCtrl.professionalPractice.hire_probability">Probabilidad de empleo</md-checkbox>
           </div>

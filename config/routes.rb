@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :frequently_asked_questions
   resources :graduation_projects
   resources :subjects
   resources :professional_practices

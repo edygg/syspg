@@ -41,6 +41,22 @@
               <div ng-message="required">Es requerido.</div>
             </div>
           </md-input-container>
+
+          <md-chips ng-hide="graduationProjectCtrl.edit" ng-model="graduationProjectCtrl.graduationProject.selected_majors" md-transform-chip="graduationProjectCtrl.transformChip($chip)" md-autocomplete-snap md-require-match="true" flex="100">
+            <md-autocomplete
+              md-selected-item="graduationProjectCtrl.selectedItem"
+              md-search-text="graduationProjectCtrl.searchText"
+              md-items="item in graduationProjectCtrl.querySearch(graduationProjectCtrl.searchText)"
+              md-item-text="item.name"
+              placeholder="Carreras">
+              <span md-highlight-text="graduationProjectCtrl.searchText">{{item.name}}</span>
+            </md-autocomplete>
+            <md-chip-template>
+              <span>
+                <strong>{{$chip.name}}</strong>
+              </span>
+            </md-chip-template>
+          </md-chips>
         </div>
       </form>
     </div>

@@ -25,6 +25,9 @@ class GraduationProjectsController < ApplicationController
   # POST /graduation_projects.json
   def create
     @graduation_project = GraduationProject.new(graduation_project_params)
+    params[:selected_majors].each do |major|
+      @graduation_project.majors << Major.find_by_id(major[:id])
+    end
 
     respond_to do |format|
       if @graduation_project.save

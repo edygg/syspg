@@ -1,0 +1,13 @@
+<md-list style="padding-bottom: 75px">
+  <md-subheader class="md-no-sticky">Preguntas frecuentes publicadas</md-subheader>
+  <md-list-item ng-show="faqsCtrl.faqs.length == 0">
+    <p>No existen preguntas frecuentes para mostrar.</p>
+  </md-list-item>
+  <md-list-item ng-repeat="faq in faqsCtrl.faqs" style="padding-left:16px">
+    {{faq}}
+  </md-list-item>
+</md-list>
+
+<md-button class="md-fab floating-bottom-right" aria-label="Crear pregunta frecuente" ng-click="faqsCtrl.showFaqCreateDialog($event)">
+  <md-icon md-font-icon="material-icons">add</md-icon>
+</md-button>
