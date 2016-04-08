@@ -1,34 +1,59 @@
 <main-navbar></main-navbar>
-<div layout="row" layout-padding>
-  <h2 class="md-title">Seleccione la(s) carreras por las que desea filtrar y algún término de búsqueda</h2>
-</div>
-<div layout="row" layout-padding>
-  <div flex>
-    <md-chips ng-model="searchCtrl.searchTerms.majors" md-autocomplete-snap md-transform-chip="searchCtrl.transformChip($chip)" md-require-match="true">
-      <md-autocomplete
+
+<div layout="row" layout-padding layout-wrap layout-margin>
+  <span flex></span>
+  <md-whiteframe class="md-whiteframe-1dp" flex="60" layout="row" layout-align="center center">
+    <form novalidate layout="row" layout-align="center center" layout-wrap flex>
+      <span flex></span>
+      <md-input-container class="md-icon-float md-icon-right md-block" flex="80">
+        <label>Buscar...</label>
+        <input ng-model="searchCtrl.searchTerms.searchText" type="text">
+        <md-icon md-icon-font="material-icons">search</md-icon>
+      </md-input-container>
+      <span flex></span>
+      <md-chips style="margin-bottom: 30px;" ng-model="searchCtrl.searchTerms.majors" md-transform-chip="searchCtrl.transformChip($chip)" md-autocomplete-snap md-require-match="true" flex="80">
+        <md-autocomplete
           md-selected-item="searchCtrl.selectedItem"
           md-search-text="searchCtrl.searchText"
           md-items="item in searchCtrl.querySearch(searchCtrl.searchText)"
           md-item-text="item.name"
           placeholder="Carreras">
-        <span md-highlight-text="searchCtrl.searchText">{{item.name}}</span>
-      </md-autocomplete>
-      <md-chip-template>
-        <span>
-          <strong>{{$chip.name}}</strong>
-        </span>
-      </md-chip-template>
-    </md-chips>
-  </div>
-  <div flex>
-    <md-input-container>
-      <label>Buscar...</label>
-      <input ng-model="searchCtrl.searchTerms.text">
-    </md-input-container>
-    <md-button class="md-accent md-raised">
-      Buscar
-    </md-button>
-  </div>
+          <span md-highlight-text="searchCtrl.searchText">{{item.name}}</span>
+        </md-autocomplete>
+        <md-chip-template>
+          <span>
+            <strong>{{$chip.name}}</strong>
+          </span>
+        </md-chip-template>
+      </md-chips>
+    </form>
+  </md-whiteframe>
+  <span flex></span>
 </div>
-
-<pre>{{searchCtrl.searchTerms}}</pre>
+<div layout="row" layout-padding layout-wrap>
+  <md-card>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Action buttons</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <p>
+        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+      </p>
+      <p>
+        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+      </p>
+      <p>
+        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+      </p>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button>Action 1</md-button>
+      <md-button>Action 2</md-button>
+    </md-card-actions>
+  </md-card>
+</div>

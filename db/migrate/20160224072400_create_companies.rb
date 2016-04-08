@@ -10,8 +10,9 @@ class CreateCompanies < ActiveRecord::Migration
       t.string :contact_job_title
 
       t.timestamps null: false
-      
+
       t.belongs_to :user
+      t.belongs_to :company_category
     end
   end
 end

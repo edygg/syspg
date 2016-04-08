@@ -3,6 +3,7 @@ if @user.role == 'company'
   json.name @user.company.name#x
   json.phone @user.company.phone#x
   json.web_site @user.company.web_site#x
+  json.company_category @user.company.company_category.name
   json.contact do
     json.name @user.company.contact_name#x
     json.email @user.company.contact_email#x

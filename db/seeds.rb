@@ -22,12 +22,54 @@ Major.create([
   { name: 'Licenciatura en Administración Industrial y de Negocios', faculty: faculty2 }
   ]) if Major.where(faculty_id: faculty2.id).count == 0
 
+CompanyCategory.destroy_all
+CompanyCategory.create([
+  { name: 'Abogados' },
+  { name: 'Accesorios de automotes' },
+  { name: 'Accesorios para computación' },
+  { name: 'Accesorios y equipos para medicina' },
+  { name: 'Accesorios y materiales eléctricos' },
+  { name: 'Accesorios y repuestos para electrodomésticos' },
+  { name: 'Fabricación de aceite vegetal' },
+  { name: 'Instalaciones y montajes de maquinarias' },
+  { name: 'Tratamientos térmicos' },
+  { name: 'Acopio de cereales' },
+  { name: 'Aditivos' },
+  { name: 'Administración de empresas' },
+  { name: 'Administración de propiedades' },
+  { name: 'Afinación de automotes' },
+  { name: 'Agencias de automotores' },
+  { name: 'Agencia de publicidad' },
+  { name: 'Agencias marítimas' },
+  { name: 'Agricultura' },
+  { name: 'Agrimensores' },
+  { name: 'Agroquímicos' },
+  { name: 'Aguas gaseosas y minerales' },
+  { name: 'Aire acondicionado' },
+  { name: 'Aislaciones acústicas' },
+  { name: 'Aislaciones térmicas' },
+  { name: 'Alarmas' },
+  { name: 'Albañilería' },
+  { name: 'Almacén mayorista' },
+  { name: 'Máquinas y herramientas' },
+  { name: 'Alquiler de oficinas' },
+  { name: 'Amoblamientos' },
+  { name: 'Ortopedia' },
+  { name: 'Arquitectos' },
+  { name: 'Artículos de electrónica' },
+  { name: 'Artículos de limpieza' },
+  { name: 'Artículos ara farmacia' },
+  { name: 'Asesoria de software' },
+  { name: 'Audio profesional' },
+  { name: 'Desarrollo de software' }
+])
+
 company_user = User.where(email: "egonzalez@enterprise.com.hn").first
 if company_user.nil?
   company_user = User.new(email: "egonzalez@enterprise.com.hn", password: "computacion1.", role: "company")
   company_user.skip_confirmation!
   company_user.save
-  company_profile = Company.create(name: 'Enterprise', phone: '22222222', web_site: 'enterprise.com.hn', contact_name: 'Edilson Fernando Gonzalez', contact_email: 'egonzalez@enterprise.com.hn', contact_phone: '89607624', contact_job_title: 'Consultor SAP', user_id: company_user.id)
+  company_profile = Company.create(name: 'Enterprise', phone: '22222222', web_site: 'enterprise.com.hn', contact_name: 'Edilson Fernando Gonzalez', contact_email: 'egonzalez@enterprise.com.hn', contact_phone: '89607624', contact_job_title: 'Consultor SAP', user_id: company_user.id, company_category: CompanyCategory.last)
 end
 
 academic_chef_user = User.where(email: "academic_chef1@unitec.edu").first
@@ -77,8 +119,6 @@ if student4.nil?
   student4.save
   student4_profile = Student.create(name: "Suany Gonzalez", unitec_id: "11211013", phone: "89897878", user: student4, campu: Campu.first, major: Major.first)
 end
-
-
 
 if Subject.count < 6
   Subject.destroy_all

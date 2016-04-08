@@ -12,6 +12,7 @@
  *
  *= require Materialize/dist/css/materialize.min
  *= require angular-material/angular-material
+ *= require angular-material-datetimepicker/css/material-datetimepicker.min
  *= require_tree .
  *= require_self
  */

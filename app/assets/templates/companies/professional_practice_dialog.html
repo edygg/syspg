@@ -11,8 +11,11 @@
   </md-toolbar>
   <md-dialog-content>
     <div class="md-dialog-content" layout="row" layout-padding>
-      <form name="professionalPracticeCtrl.professionalPracticeForm" ng-submit="professionalPracticeCtrl.professionalPracticeForm.$valid && professionalPracticeCtrl.answer(professionalPracticeCtrl.professionalPractice)" flex>
+      <form novalidate name="professionalPracticeCtrl.professionalPracticeForm" ng-submit="professionalPracticeCtrl.professionalPracticeForm.$valid && professionalPracticeCtrl.answer(professionalPracticeCtrl.professionalPractice)" flex>
         <div layout="row" layout-wrap>
+          <div flex="100">
+            <h1 class="md-title">Detalles de la práctica profesional</h1>
+          </div>
           <md-input-container class="md-block" flex="33">
             <label>Área o departamento</label>
             <input ng-model="professionalPracticeCtrl.professionalPractice.area" name="practiceArea" required>
@@ -45,7 +48,13 @@
             <label>Observaciones</label>
             <textarea ng-model="professionalPracticeCtrl.professionalPractice.observation" name="practiceObservation"></textarea>
           </md-input-container>
-
+          <md-input-container flex="33">
+            <label>Hora de entrada</label>
+            <input mdc-datetime-picker date="false" time="true" type="text" id="time" short-time="true"
+               placeholder="Time"
+               format="hh:mm a"
+               ng-model="time">
+          </md-input-container>
           <md-chips style="margin-bottom: 30px;" ng-hide="professionalPracticeCtrl.edit" ng-model="professionalPracticeCtrl.professionalPractice.selected_majors" md-transform-chip="professionalPracticeCtrl.transformChip($chip)" md-autocomplete-snap md-require-match="true" flex="100">
             <md-autocomplete
               md-selected-item="professionalPracticeCtrl.selectedItem"
@@ -61,13 +70,30 @@
               </span>
             </md-chip-template>
           </md-chips>
-
           <div class="md-block" flex="33">
             <md-checkbox ng-model="professionalPracticeCtrl.professionalPractice.hire_probability">Probabilidad de empleo</md-checkbox>
           </div>
           <div class="md-block" flex="33">
             <md-checkbox ng-model="professionalPracticeCtrl.professionalPractice.flexitime">Flexibilidad de horario</md-checkbox>
           </div>
+          <div flex="100">
+            <h1 class="md-title">Información de contacto del jefe inmediato</h1>
+          </div>
+          <md-input-container class="md-block" flex="50">
+            <label>Nombre del jefe inmediato</label>
+            <input ng-model="professionalPracticeCtrl.professionalPractice.boss_name" name="bossName" required>
+            <div ng-messages="professionalPracticeCtrl.professionalPracticeForm.bossName.$error">
+              <div ng-message="required">Es requerido.</div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block" flex="50">
+            <label>Email del jefe inmediato</label>
+            <input ng-model="professionalPracticeCtrl.professionalPractice.boss_email" name="bossEmail" required ng-pattern="/^.+@.+\..+$/">
+            <div ng-messages="professionalPracticeCtrl.professionalPracticeForm.bossEmail.$error">
+              <div ng-message="required">Es requerido.</div>
+              <div ng-message="pattern">No luce como un email.</div>
+            </div>
+          </md-input-container>
         </div>
       </form>
     </div>

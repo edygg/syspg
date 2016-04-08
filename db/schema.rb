@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160404003016) do
+ActiveRecord::Schema.define(version: 20160407095650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,9 +40,16 @@ ActiveRecord::Schema.define(version: 20160404003016) do
     t.string   "contact_email"
     t.string   "contact_phone"
     t.string   "contact_job_title"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.integer  "user_id"
+    t.integer  "company_category_id"
+  end
+
+  create_table "company_categories", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "faculties", force: :cascade do |t|
@@ -91,11 +98,22 @@ ActiveRecord::Schema.define(version: 20160404003016) do
     t.string   "objective"
     t.string   "daily_tasks"
     t.string   "observation"
+    t.string   "boss_name"
+    t.string   "boss_email"
+    t.string   "check_in"
+    t.string   "check_out"
     t.boolean  "hire_probability", default: false
     t.boolean  "flexitime",        default: false
     t.integer  "company_id"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
+  end
+
+  create_table "quarters", force: :cascade do |t|
+    t.integer  "period"
+    t.integer  "year"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "students", force: :cascade do |t|

@@ -1,0 +1,28 @@
+<md-dialog aria-label="Carreras" ng-cloak style="width: 33%">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2 ng-show="majorCtrl.edit">Editar carrera</h2>
+      <h2 ng-hide="majorCtrl.edit">Crear carrera</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="majorCtrl.cancel()">
+        <md-icon md-font-set="material-icons">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout="row" layout-padding>
+      <form novalidate name="majorCtrl.majorForm" ng-submit="majorCtrl.majorForm.$valid && majorCtrl.answer(majorCtrl.major)" flex>
+        <md-input-container class="md-block" flex>
+          <label>Nombre</label>
+          <input ng-model="majorCtrl.major.name" name="name" required>
+          <div ng-messages="majorCtrl.majorForm.name.$error">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+      </form>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button ng-click="majorCtrl.majorForm.$valid && majorCtrl.answer(majorCtrl.major)" ng-disabled="!majorCtrl.majorForm.$valid">Guardar</md-button>
+  </md-dialog-actions>
+</md-dialog>

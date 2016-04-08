@@ -72,6 +72,6 @@ class ProfessionalPracticesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def professional_practice_params
-      params.require(:professional_practice).permit(:area, :charge, :objective, :daily_tasks, :observation, :hire_probability, :flexitime, :company_id)
+      params.require(:professional_practice).permit(:area, :charge, :objective, :daily_tasks, :observation, :hire_probability, :flexitime, :company_id, :boss_name, :boss_email, :check_in, :check_out)
     end
 end

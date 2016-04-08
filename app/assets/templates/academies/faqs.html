@@ -1,13 +1,33 @@
 <md-list style="padding-bottom: 75px">
   <md-subheader class="md-no-sticky">Preguntas frecuentes publicadas</md-subheader>
-  <md-list-item ng-show="faqsCtrl.faqs.length == 0">
+  <md-list-item ng-show="manageFaqsCtrl.faqs.length == 0">
     <p>No existen preguntas frecuentes para mostrar.</p>
   </md-list-item>
-  <md-list-item ng-repeat="faq in faqsCtrl.faqs" style="padding-left:16px">
-    {{faq}}
+  <md-list-item class="md-2-line" ng-repeat="faq in manageFaqsCtrl.faqs" style="padding-left:16px">
+    <div class="md-list-item-text">
+      <h3>{{faq.question}}</h3>
+      <p>{{faq.answer}}</p>
+    </div>
+    <md-menu class="md-secondary">
+      <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+        <md-icon md-font-set="material-icons">more_vert</md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <md-button ng-click="manageFaqsCtrl.showFaqEditDialog($event, faq.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">edit</md-icon>Editar
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="manageFaqsCtrl.deleteFaq(faq.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">delete</md-icon>Eliminar
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
   </md-list-item>
 </md-list>
 
-<md-button class="md-fab floating-bottom-right" aria-label="Crear pregunta frecuente" ng-click="faqsCtrl.showFaqCreateDialog($event)">
+<md-button class="md-fab floating-bottom-right" aria-label="Crear pregunta frecuente" ng-click="manageFaqsCtrl.showFaqCreateDialog($event)">
   <md-icon md-font-icon="material-icons">add</md-icon>
 </md-button>

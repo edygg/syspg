@@ -1,0 +1,38 @@
+<md-dialog aria-label="Periodos académicos" ng-cloak style="width: 66%">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2 ng-show="quarterCtrl.edit">Editar periodo académico</h2>
+      <h2 ng-hide="quarterCtrl.edit">Crear periodo académico</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="quarterCtrl.cancel()">
+        <md-icon md-font-set="material-icons">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <form novalidate name="quarterCtrl.quarterForm" ng-submit="quarterCtrl.quarterForm.$valid && quarterCtrl.answer(quarterCtrl.quarter)" layout="row">
+        <md-input-container class="md-block" flex="50">
+          <label>Periodo</label>
+          <md-select ng-model="quarterCtrl.quarter.period" required>
+            <md-option ng-repeat="period in quarterCtrl.periods" value="{{period}}">
+              {{period}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex="50">
+          <label>Año</label>
+          <md-select ng-model="quarterCtrl.quarter.year" required>
+            <md-option ng-repeat="year in quarterCtrl.years" value="{{year}}">
+              {{year}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </form>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button ng-click="quarterCtrl.quarterForm.$valid && quarterCtrl.answer(quarterCtrl.quarter)" ng-disabled="!quarterCtrl.quarterForm.$valid">Guardar</md-button>
+  </md-dialog-actions>
+</md-dialog>

@@ -12,7 +12,8 @@
       "angular-material": "~1.0.1",
       "angular-ui-router": "^0.2.18",
       "ng-token-auth": "~0.0.28",
-      "Materialize": "materialize#~0.97.5"
+      "Materialize": "materialize#~0.97.5",
+      "angular-material-datetimepicker": "^1.4.0"
       // "three.js"    : "https://raw.github.com/mrdoob/three.js/master/build/three.js"
     }
   }

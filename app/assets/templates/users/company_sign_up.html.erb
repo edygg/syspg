@@ -35,23 +35,32 @@
           </div>
         </md-input-container>
 
-        <md-input-container flex="33" class="md-block">
+        <md-input-container flex="50" class="md-block">
           <label>Nombre de la empresa</label>
           <input name="companyName" ng-model="companySignUpCtrl.companyInfo.name" type="text" required>
           <div ng-messages="companySignupForm.companyName.$error" role="alert">
             <div ng-message="required">Es requerido.</div>
           </div>
         </md-input-container>
-        <md-input-container flex="33" class="md-block">
+        <md-input-container flex="50" class="md-block">
           <label>Teléfono principal</label>
           <input name="companyPhone" ng-model="companySignUpCtrl.companyInfo.phone" type="text" required>
           <div ng-messages="companySignupForm.companyPhone.$error" role="alert">
             <div ng-message="required">Es requerido.</div>
           </div>
         </md-input-container>
-        <md-input-container flex="33" class="md-block">
+        <md-input-container flex="50" class="md-block">
           <label>Sitio web</label>
           <input ng-model="companySignUpCtrl.companyInfo.web_site" type="text">
+        </md-input-container>
+        <md-input-container flex="50" class="md-block">
+          <label>Rubro</label>
+          <md-select required name="companyCategory" ng-model="companySignUpCtrl.companyInfo.company_category_id" md-on-open="companySignUpCtrl.loadCompanyCategories()" >
+            <md-option ng-value="companyCategory.id" ng-repeat="companyCategory in companySignUpCtrl.companyCategoryList">{{companyCategory.name}}</md-option>
+          </md-select>
+          <div ng-messages="companySignupForm.companyCategory.$error" ng-if="companySignupForm.$dirty">
+            <div ng-message="required">Es requerido.</div>
+          </div>
         </md-input-container>
       </div>
 

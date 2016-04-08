@@ -11,7 +11,7 @@
   </md-toolbar>
   <md-dialog-content>
     <div class="md-dialog-content" layout="row" layout-padding>
-      <form name="graduationProjectCtrl.graduationProjectForm" ng-submit="graduationProjectCtrl.graduationProjectForm.$valid && graduationProjectCtrl.answer(graduationProjectCtrl.graduationProject)" flex>
+      <form novalidate name="graduationProjectCtrl.graduationProjectForm" ng-submit="graduationProjectCtrl.graduationProjectForm.$valid && graduationProjectCtrl.answer(graduationProjectCtrl.graduationProject)" flex>
         <div layout="row" layout-wrap>
           <md-input-container class="md-block" flex="33">
             <label>Título o nombre</label>
@@ -35,7 +35,7 @@
             </div>
           </md-input-container>
           <md-input-container class="md-block" flex="50">
-            <label>Descripción</label>
+            <label>Requisitos</label>
             <textarea ng-model="graduationProjectCtrl.graduationProject.requirements" name="requirements" required></textarea>
             <div ng-messages="graduationProjectCtrl.graduationProjectForm.requirements.$error">
               <div ng-message="required">Es requerido.</div>

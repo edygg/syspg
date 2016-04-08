@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :quarters
+  resources :company_categories
   resources :frequently_asked_questions
   resources :graduation_projects
   resources :subjects

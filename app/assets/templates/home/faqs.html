@@ -1,0 +1,12 @@
+<main-navbar></main-navbar>
+<header class="indigo lighten-1" layout="row">
+  <span flex></span>
+  <h1 class="page-title white-text">Preguntas frecuentes</h1>
+  <span flex></span>
+</header>
+<md-content flex layout-padding>
+  <div ng-repeat="faq in showFaqsCtrl.faqs">
+    <p class="md-subhead">{{faq.question}}</p>
+    <p class="md-body-1">{{faq.answer}}</p>
+  </div>
+</md-content>

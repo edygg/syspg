@@ -1,0 +1,35 @@
+<md-dialog aria-label="Preguntas frecuentes" ng-cloak style="width: 66%">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2 ng-show="faqsCtrl.edit">Editar pregunta frecuente</h2>
+      <h2 ng-hide="faqsCtrl.edit">Crear pregunta frecuente</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="faqsCtrl.cancel()">
+        <md-icon md-font-set="material-icons">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout="row" layout-padding>
+      <form novalidate name="faqsCtrl.faqForm" ng-submit="faqsCtrl.faqForm.$valid && faqsCtrl.answer(faqsCtrl.faq)" flex>
+        <md-input-container class="md-block" flex="100">
+          <label>Pregunta</label>
+          <input ng-model="faqsCtrl.faq.question" name="question" required>
+          <div ng-messages="faqsCtrl.faqForm.question.$error">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block" flex="100">
+           <label>Respuesta</label>
+           <textarea ng-model="faqsCtrl.faq.answer" name="answer" required></textarea>
+           <div ng-messages="faqsCtrl.faqForm.answer.$error">
+             <div ng-message="required">Es requerido.</div>
+           </div>
+         </md-input-container>
+      </form>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button ng-click="faqsCtrl.faqForm.$valid && faqsCtrl.answer(faqsCtrl.faq)" ng-disabled="!faqsCtrl.faqForm.$valid">Guardar</md-button>
+  </md-dialog-actions>
+</md-dialog>

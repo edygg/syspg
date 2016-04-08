@@ -6,6 +6,11 @@ class CreateProfessionalPractices < ActiveRecord::Migration
       t.string :objective
       t.string :daily_tasks
       t.string :observation
+      t.string :boss_name
+      t.string :boss_email
+      t.string :check_in
+      t.string :check_out
+
       t.boolean :hire_probability, default: false
       t.boolean :flexitime, default: false
       t.belongs_to :company

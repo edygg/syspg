@@ -4,7 +4,7 @@ class FacultiesController < ApplicationController
   # GET /faculties
   # GET /faculties.json
   def index
-    @faculties = Faculty.all
+    @faculties = Faculty.all.order(name: :asc)
   end
 
   # GET /faculties/1

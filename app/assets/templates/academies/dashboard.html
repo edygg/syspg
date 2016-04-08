@@ -14,7 +14,7 @@
         </div>
         <md-button class="md-secondary md-accent" ng-click="academyDashboardCtrl.verifyUser(company.user_id)">Verificar</md-button>
       </md-list-item>
-      <md-divider ng-show="academyDashboardCtrl.unverified_users.students.length > 0"></md-divider>
+      <md-divider ng-show="academyDashboardCtrl.unverified_users.students.length > 0 && academyDashboardCtrl.unverified_users.companies.length > 0"></md-divider>
 
       <subheader class="md-no-sticky" ng-show="academyDashboardCtrl.unverified_users.students.length > 0">Estudiantes</subheader>
       <md-list-item class="md-3-line" ng-repeat="student in academyDashboardCtrl.unverified_users.students" ui-sref="profile.student({user_id: student.user_id})">
@@ -26,7 +26,7 @@
         </div>
         <md-button class="md-secondary md-accent" ng-click="academyDashboardCtrl.verifyUser(student.user_id)">Verificar</md-button>
       </md-list-item>
-      <md-divider ng-show="academyDashboardCtrl.unverified_users.academics.length > 0"></md-divider>
+      <md-divider ng-show="academyDashboardCtrl.unverified_users.academics.length > 0 && academyDashboardCtrl.unverified_users.students.length > 0"></md-divider>
 
       <subheader class="md-no-sticky" ng-show="academyDashboardCtrl.unverified_users.academics.length > 0">Académicos</subheader>
       <md-list-item class="md-2-line" ng-repeat="academic in academyDashboardCtrl.unverified_users.academics" ui-sref="profile.academic({user_id: academic.user_id})">

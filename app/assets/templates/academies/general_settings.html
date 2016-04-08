@@ -64,6 +64,48 @@
       </md-menu-content>
     </md-menu>
   </md-list-item>
+
+  <md-divider></md-divider>
+  <md-subheader class="md-no-sticky">Carreras</md-subheader>
+  <md-list-item ng-repeat="major in generalSettingsCtrl.majors" style="padding-left:16px">
+    <p>{{major.name}}</p>
+    <md-menu class="md-secondary">
+      <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+        <md-icon md-font-set="material-icons">more_vert</md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <md-button ng-click="generalSettingsCtrl.showMajorEditDialog($event, major.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">edit</md-icon>Editar
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="generalSettingsCtrl.deleteMajor(major.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">delete</md-icon>Eliminar
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </md-list-item>
+
+  <md-divider></md-divider>
+  <md-subheader class="md-no-sticky">Periodos académicos</md-subheader>
+  <md-list-item ng-repeat="quarter in generalSettingsCtrl.quarters" style="padding-left:16px">
+    <p>Periodo {{quarter.period}} Año {{quarter.year}}</p>
+    <md-menu class="md-secondary">
+      <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+        <md-icon md-font-set="material-icons">more_vert</md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <md-button ng-click="generalSettingsCtrl.deleteQuarter(quarter.id)">
+            <md-icon class="md-accent" md-font-set="material-icons">delete</md-icon>Eliminar
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </md-list-item>
+
 </md-list>
 
 <md-fab-speed-dial class="md-scale floating-bottom-right" md-direction="up">
@@ -73,9 +115,17 @@
     </md-button>
   </md-fab-trigger>
   <md-fab-actions>
+    <md-button aria-label="Agregar periodo académico" class="md-fab md-raised md-mini" ng-click="generalSettingsCtrl.showQuarterCreateDialog($event)">
+      <md-tooltip md-direction="left" md-autohide="false">Agregar periodo académico</md-tooltip>
+      <md-icon font-icon-family="material-icons">schedule</md-icon>
+    </md-button>
     <md-button aria-label="Agregar asignatura" class="md-fab md-raised md-mini" ng-click="generalSettingsCtrl.showSubjectCreateDialog($event)">
       <md-tooltip md-direction="left" md-autohide="false">Agregar asignatura</md-tooltip>
       <md-icon font-icon-family="material-icons">local_library</md-icon>
+    </md-button>
+    <md-button aria-label="Agregar carrera" class="md-fab md-raised md-mini" ng-click="generalSettingsCtrl.showMajorCreateDialog($event)">
+      <md-tooltip md-direction="left" md-autohide="false">Agregar carrera</md-tooltip>
+      <md-icon font-icon-family="material-icons">people</md-icon>
     </md-button>
     <md-button aria-label="Agregar facultad" class="md-fab md-raised md-mini" ng-click="generalSettingsCtrl.showFacultyCreateDialog($event)">
       <md-tooltip md-direction="left" md-autohide="false">Agregar facultad</md-tooltip>
