@@ -10,9 +10,10 @@ class CreateProfessionalPractices < ActiveRecord::Migration
       t.string :boss_email
       t.string :check_in
       t.string :check_out
-
       t.boolean :hire_probability, default: false
       t.boolean :flexitime, default: false
+      t.boolean :active, default: true
+
       t.belongs_to :company
 
       t.timestamps null: false

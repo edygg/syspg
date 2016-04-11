@@ -12,6 +12,10 @@ class StudentsController < ApplicationController
   def show
   end
 
+  def student_belongs_to_user
+    @student = Student.find_by_user_id(params[:user_id])
+  end
+
   # GET /students/new
   def new
     @student = Student.new

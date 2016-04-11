@@ -130,3 +130,49 @@ if Subject.count < 6
   Subject.create(name: 'Proyecto Graduación')
   Subject.create(name: 'Práctica Profesional')
 end
+
+# Practicas profesionales
+ProfessionalPractice.destroy_all
+
+pp1 = ProfessionalPractice.new(area: 'Area 1', charge: 'Cargo 1', objective: 'Objectivo 1', daily_tasks: 'Responsabilidades 1', boss_name: 'Jefe 1', boss_email: 'jefe1@jefe.com', check_in: '', check_out: '', hire_probability: false, flexitime: false, company: Company.first)
+pp1.majors << Major.first
+pp1.save
+
+pp2 = ProfessionalPractice.new(area: 'Area 2', charge: 'Cargo 2', objective: 'Objectivo 2', daily_tasks: 'Responsabilidades 2', boss_name: 'Jefe 2', boss_email: 'jefe2@jefe.com', check_in: '', check_out: '', hire_probability: false, flexitime: false, company: Company.first)
+pp2.majors << Major.first
+pp2.save
+
+pp3 = ProfessionalPractice.new(area: 'Area 3', charge: 'Cargo 3', objective: 'Objectivo 3', daily_tasks: 'Responsabilidades 3', boss_name: 'Jefe 3', boss_email: 'jefe3@jefe.com', check_in: '', check_out: '', hire_probability: false, flexitime: false, company: Company.first)
+pp3.majors << Major.first
+pp3.save
+
+pp4 = ProfessionalPractice.new(area: 'Area 4', charge: 'Cargo 4', objective: 'Objectivo 4', daily_tasks: 'Responsabilidades 4', boss_name: 'Jefe 4', boss_email: 'jefe4@jefe.com', check_in: '', check_out: '', hire_probability: false, flexitime: false, company: Company.first)
+pp4.majors << Major.last
+pp4.save
+
+pp5 = ProfessionalPractice.new(area: 'Area 5', charge: 'Cargo 5', objective: 'Objectivo 5', daily_tasks: 'Responsabilidades 5', boss_name: 'Jefe 5', boss_email: 'jefe5@jefe.com', check_in: '', check_out: '', hire_probability: false, flexitime: false, company: Company.first)
+pp5.majors << Major.last
+pp5.save
+
+# Proyectos de Graduación
+GraduationProject.destroy_all
+
+gp1 = GraduationProject.new(name: 'Nombre 1', description: 'Descripción 1', objective: 'Objetivo 1', requirements: 'Requisitos 1', company: Company.first)
+gp1.majors << Major.first
+gp1.save
+
+gp2 = GraduationProject.new(name: 'Nombre 2', description: 'Descripción 2', objective: 'Objetivo 2', requirements: 'Requisitos 2', company: Company.first)
+gp2.majors << Major.first
+gp2.save
+
+gp3 = GraduationProject.new(name: 'Nombre 3', description: 'Descripción 3', objective: 'Objetivo 3', requirements: 'Requisitos 3', company: Company.first)
+gp3.majors << Major.first
+gp3.save
+
+gp4 = GraduationProject.new(name: 'Nombre 4', description: 'Descripción 4', objective: 'Objetivo 4', requirements: 'Requisitos 4', company: Company.first)
+gp4.majors << Major.last
+gp4.save
+
+gp5 = GraduationProject.new(name: 'Nombre 5', description: 'Descripción 5', objective: 'Objetivo 5', requirements: 'Requisitos 5', company: Company.first)
+gp5.majors << Major.last
+gp5.save

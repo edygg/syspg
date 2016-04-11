@@ -1,14 +1,21 @@
 Rails.application.routes.draw do
+  resources :enrollments
   resources :quarters
   resources :company_categories
   resources :frequently_asked_questions
-  resources :graduation_projects
+  resources :graduation_projects do
+    get 'search', on: :collection
+  end
   resources :subjects
-  resources :professional_practices
+  resources :professional_practices do
+    get 'search', on: :collection
+  end
   resources :academies do
     get 'academy_belongs_to_user', on: :collection
   end
-  resources :students
+  resources :students do
+    get 'student_belongs_to_user', on: :collection
+  end
   resources :majors
   resources :faculties
   resources :campus

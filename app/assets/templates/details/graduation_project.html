@@ -1,0 +1,35 @@
+<div layout="row" layout-padding>
+  <span flex></span>
+  <div flex="60">
+    <h1 class="md-display-1">{{detailsCtrl.graduationProject.name}} | <span class="md-headline">{{detailsCtrl.graduationProject.company}}</span></h1>
+    <md-list>
+      <md-list-item class="md-2-line">
+        <md-icon md-icon-font="material-icons">grade</md-icon>
+        <div class="md-list-item-text">
+          <h3>Objetivo</h3>
+          <p>{{detailsCtrl.graduationProject.objective}}</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-2-line">
+        <md-icon md-icon-font="material-icons">assignment</md-icon>
+        <div class="md-list-item-text">
+          <h3>Descripción</h3>
+          <p>{{detailsCtrl.graduationProject.description}}</p>
+        </div>
+      </md-list-item>
+    </md-list>
+    <md-list-item class="md-2-line">
+      <md-icon md-icon-font="material-icons">assignment_turned_in</md-icon>
+      <div class="md-list-item-text">
+        <h3>Requisitos</h3>
+        <p>{{detailsCtrl.graduationProject.requirements}}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+  <div layout="column" layout-align="center center" ng-show="detailsCtrl.available">
+    <p>¿Estás interesado?</p>
+    <md-button class="md-accent md-raised" ng-click="detailsCtrl.enrollStudent(detailsCtrl.graduationProject.id)">Aplica</md-button>
+  </div>
+  </div>
+  <span flex></span>
+</div>

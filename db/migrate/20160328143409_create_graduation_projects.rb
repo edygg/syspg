@@ -5,6 +5,8 @@ class CreateGraduationProjects < ActiveRecord::Migration
       t.string :description
       t.string :objective
       t.string :requirements
+      t.boolean :active, default: true
+
       t.belongs_to :company
 
       t.timestamps null: false

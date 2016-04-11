@@ -7,6 +7,11 @@ class GraduationProjectsController < ApplicationController
     @graduation_projects = GraduationProject.where(company_id: params[:company_id])
   end
 
+  def search
+    # TODO return only active ones
+    @graduation_projects = GraduationProject.includes([:majors, :company]).where(active: true).order(name: :asc)
+  end
+
   # GET /graduation_projects/1
   # GET /graduation_projects/1.json
   def show

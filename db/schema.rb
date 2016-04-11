@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160407095650) do
+ActiveRecord::Schema.define(version: 20160411021744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,15 @@ ActiveRecord::Schema.define(version: 20160407095650) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "enrollments", force: :cascade do |t|
+    t.integer  "student_id"
+    t.integer  "professional_practice_id"
+    t.integer  "graduation_project_id"
+    t.boolean  "verified",                 default: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+  end
+
   create_table "faculties", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -70,9 +79,10 @@ ActiveRecord::Schema.define(version: 20160407095650) do
     t.string   "description"
     t.string   "objective"
     t.string   "requirements"
+    t.boolean  "active",       default: true
     t.integer  "company_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "graduation_projects_majors", force: :cascade do |t|
@@ -104,6 +114,7 @@ ActiveRecord::Schema.define(version: 20160407095650) do
     t.string   "check_out"
     t.boolean  "hire_probability", default: false
     t.boolean  "flexitime",        default: false
+    t.boolean  "active",           default: true
     t.integer  "company_id"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
@@ -120,11 +131,12 @@ ActiveRecord::Schema.define(version: 20160407095650) do
     t.string   "name"
     t.string   "unitec_id"
     t.string   "phone"
+    t.boolean  "available",  default: true
     t.integer  "user_id"
     t.integer  "campu_id"
     t.integer  "major_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "subjects", force: :cascade do |t|

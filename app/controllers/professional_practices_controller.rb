@@ -4,7 +4,20 @@ class ProfessionalPracticesController < ApplicationController
   # GET /professional_practices
   # GET /professional_practices.json
   def index
+    # TODO return only active ones
     @professional_practices = ProfessionalPractice.where(company_id: params[:company_id])
+  end
+
+  def search
+    # TODO return only active ones
+    @professional_practices = ProfessionalPractice.includes([:majors, :company]).where(active: true).order(charge: :asc)
+    # if (params.has_key?(:majors))
+    #   @professional_practices = @professional_practices.where(majors: { id: params[:majors] })
+    # end
+    #
+    # if (params.has_key?(:search_text))
+    #   @professional_practices.where("professional_practices.charge like '%:text%'", { text: params[:search_text] })
+    # end
   end
 
   # GET /professional_practices/1

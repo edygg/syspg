@@ -1,0 +1,52 @@
+<div layout="row" layout-padding>
+  <span flex></span>
+  <div flex="60">
+    <h1 class="md-display-1">{{detailsCtrl.professionalPractice.charge}} | <span class="md-headline">{{detailsCtrl.professionalPractice.company}}</span></h1>
+    <span class="md-caption" ng-if="detailsCtrl.professionalPractice.hire_probability && !detailsCtrl.professionalPractice.flexitime">Con probabilidad de empleo</span>
+    <span class="md-caption" ng-if="detailsCtrl.professionalPractice.flexitime && !detailsCtrl.professionalPractice.hire_probability">Con flexibilidad de horario</span>
+    <span class="md-caption" ng-if="detailsCtrl.professionalPractice.hire_probability && detailsCtrl.professionalPractice.flexitime">Con probabilidad de empleo y flexibilidad de horario</span>
+    <md-list>
+      <md-list-item class="md-2-line">
+        <md-icon md-icon-font="material-icons">work</md-icon>
+        <div class="md-list-item-text">
+          <h3>Área</h3>
+          <p>{{detailsCtrl.professionalPractice.area}}</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-2-line">
+        <md-icon md-icon-font="material-icons">grade</md-icon>
+        <div class="md-list-item-text">
+          <h3>Objetivo</h3>
+          <p>{{detailsCtrl.professionalPractice.objective}}</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-2-line">
+        <md-icon md-icon-font="material-icons">assignment</md-icon>
+        <div class="md-list-item-text">
+          <h3>Responsabilidades</h3>
+          <p>{{detailsCtrl.professionalPractice.daily_tasks}}</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-2-line">
+        <md-icon md-icon-font="material-icons">report_problem</md-icon>
+        <div class="md-list-item-text">
+          <h3>Observaciones</h3>
+          <p ng-show="detailsCtrl.professionalPractice.observation.length != null">{{detailsCtrl.professionalPractice.observation}}</p>
+          <p ng-show="detailsCtrl.professionalPractice.observation.length == null">No hay observaciones que mostrar.</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-2-line">
+        <md-icon md-icon-font="material-icons">access_time</md-icon>
+        <div class="md-list-item-text">
+          <h3>Horario</h3>
+          <p>{{detailsCtrl.professionalPractice.check_in}} a {{detailsCtrl.professionalPractice.check_out}}</p>
+        </div>
+      </md-list-item>
+    </md-list>
+    <div layout="column" layout-align="center center" ng-show="detailsCtrl.available">
+      <p>¿Estás interesado?</p>
+      <md-button class="md-accent md-raised" ng-click="detailsCtrl.enrollStudent(detailsCtrl.professionalPractice.id)">Aplica</md-button>
+    </div>
+  </div>
+  <span flex></span>
+</div>
