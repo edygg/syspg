@@ -176,3 +176,12 @@ gp4.save
 gp5 = GraduationProject.new(name: 'Nombre 5', description: 'Descripción 5', objective: 'Objetivo 5', requirements: 'Requisitos 5', company: Company.first)
 gp5.majors << Major.last
 gp5.save
+
+Quarter.destroy_all
+
+Quarter.create([
+    { period: 1, year: 2016 },
+    { period: 2, year: 2016 },
+    { period: 4, year: 2016 },
+    { period: 5, year: 2016 },
+])

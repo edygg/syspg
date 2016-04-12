@@ -889,6 +889,7 @@ app.controller('QuarterController', ['$http', 'quarterId', '$mdDialog', function
 app.controller('AcademyDashboardController', ['$http', '$user', '$mdToast', function($http, $user, $mdToast) {
   var self = this;
   this.unverified_users = {};
+  this.unverifiedEnrollments = [];
 
   this.loadUnverifiedUsers = function() {
     $user.getAcademicInfo()
@@ -905,6 +906,21 @@ app.controller('AcademyDashboardController', ['$http', '$user', '$mdToast', func
       });
   };
 
+  this.loadUnverifiedEnrollments = function() {
+    $user.getAcademicInfo()
+      .then(function(academic) {
+        $http.get('/enrollments/unverified_enrollments.json', { params: { campus_id: academic.campu_id, major_id: academic.major_id } })
+          .then(function(response) {
+            self.unverifiedEnrollments = response.data;
+          })
+          .catch(function(errors) {
+            $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+          });
+      }, function(errors) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      })
+  };
+
   this.verifyUser = function(user_id) {
     $http.put('/user_management/verify_user.json', { user_id: user_id })
       .then(function(response) {
@@ -913,7 +929,19 @@ app.controller('AcademyDashboardController', ['$http', '$user', '$mdToast', func
       })
   };
 
+  this.authorizeEnrollment = function(enrollment_id) {
+    $http.put('/enrollments/authorize_enrollment.json', { enrollment_id: enrollment_id })
+      .then(function(response) {
+        $mdToast.show($mdToast.simple().textContent('Autorizado.'));
+        self.loadUnverifiedEnrollments();
+      })
+      .catch(function(errors) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
   this.loadUnverifiedUsers();
+  this.loadUnverifiedEnrollments();
 }]);
 
 app.controller('StudentProfileController', ['$http', '$stateParams', '$mdToast', function($http, $stateParams, $mdToast) {
@@ -1261,6 +1289,19 @@ app.controller('ProfessionalPracticeSearchController', ['$http', '$mdToast', '$u
   this.searchTerms = { search_text: '', majors: [] };
   this.majors = [];
   this.professionalPractices = [];
+  this.isStudent = false;
+
+  this.checkStudent = function() {
+    if ($user.isUserSignedIn() && $user.isStudent()) {
+      self.isStudent = true;
+      $user.getStudentInfo()
+        .then(function(student) {
+          self.searchTerms.majors = [student.major];
+        }, function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    }
+  };
 
   this.loadProfessionalPractices = function() {
     $http.get('/professional_practices/search.json')
@@ -1278,7 +1319,7 @@ app.controller('ProfessionalPracticeSearchController', ['$http', '$mdToast', '$u
           for (var j = 0; j < value.majors.length; j++) {
             if (self.searchTerms.majors[i].id == value.majors[j].id) {
               if (self.searchTerms.search_text.length > 0)
-                return value.charge.indexOf(self.searchTerms.search_text) != -1;
+                return value.charge.toLowerCase().indexOf(self.searchTerms.search_text.toLowerCase()) != -1;
               else
                 return true;
             }
@@ -1326,6 +1367,7 @@ app.controller('ProfessionalPracticeSearchController', ['$http', '$mdToast', '$u
 
   this.loadMajors();
   this.loadProfessionalPractices();
+  this.checkStudent();
 }]);
 
 app.controller('GraduationProjectSearchController', ['$http', '$mdToast', '$user', '$scope', function($http, $mdToast, $user, $scope) {
@@ -1333,6 +1375,19 @@ app.controller('GraduationProjectSearchController', ['$http', '$mdToast', '$user
   this.searchTerms = { search_text: '', majors: [] };
   this.majors = [];
   this.graduationProjects = [];
+  this.isStudent = false;
+
+  this.checkStudent = function() {
+    if ($user.isUserSignedIn() && $user.isStudent()) {
+      self.isStudent = true;
+      $user.getStudentInfo()
+        .then(function(student) {
+          self.searchTerms.majors = [student.major];
+        }, function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    }
+  };
 
   this.loadGraduationProjects = function() {
     $http.get('/graduation_projects/search.json')
@@ -1350,7 +1405,7 @@ app.controller('GraduationProjectSearchController', ['$http', '$mdToast', '$user
           for (var j = 0; j < value.majors.length; j++) {
             if (self.searchTerms.majors[i].id == value.majors[j].id) {
               if (self.searchTerms.search_text.length > 0)
-                return value.name.indexOf(self.searchTerms.search_text) != -1;
+                return value.name.toLowerCase().indexOf(self.searchTerms.search_text.toLowerCase()) != -1;
               else
                 return true;
             }
@@ -1398,6 +1453,7 @@ app.controller('GraduationProjectSearchController', ['$http', '$mdToast', '$user
 
   this.loadMajors();
   this.loadGraduationProjects();
+  this.checkStudent();
 }]);
 
 app.controller('ManageFaqsController', ['$http', '$mdDialog', '$mdToast', function($http, $mdDialog, $mdToast) {

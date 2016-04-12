@@ -7,6 +7,24 @@ class EnrollmentsController < ApplicationController
     @enrollments = Enrollment.all
   end
 
+  def unverified_enrollments
+    @enrollments = Enrollment.joins(:student).where(students: { campu_id: params[:campus_id], major_id: params[:major_id]}, enrollments: { verified: false }).includes([:student, :graduation_project, :professional_practice])
+  end
+
+  def authorize_enrollment
+    @enrollment = Enrollment.find_by_id(params[:enrollment_id])
+    @enrollment.verified = true
+    respond_to do |format|
+      if @enrollment.save
+        format.html
+        format.json { render json: @enrollment, status: :ok }
+      else
+        format.html
+        format.json { render json: @enrollment.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # GET /enrollments/1
   # GET /enrollments/1.json
   def show

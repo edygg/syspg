@@ -11,7 +11,7 @@
         <md-icon md-icon-font="material-icons">search</md-icon>
       </md-input-container>
       <span flex></span>
-      <md-chips style="margin-bottom: 30px;" ng-model="searchCtrl.searchTerms.majors" md-transform-chip="searchCtrl.transformChip($chip)" md-autocomplete-snap md-require-match="true" flex="80">
+      <md-chips ng-hide="searchCtrl.isStudent" style="margin-bottom: 30px;" ng-model="searchCtrl.searchTerms.majors" md-transform-chip="searchCtrl.transformChip($chip)" md-autocomplete-snap md-require-match="true" flex="80">
         <md-autocomplete
           md-selected-item="searchCtrl.selectedItem"
           md-search-text="searchCtrl.searchText"

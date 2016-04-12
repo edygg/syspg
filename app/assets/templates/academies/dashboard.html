@@ -5,7 +5,7 @@
         No hay usuarios por verificar.
       </md-list-item>
 
-      <subheader class="md-no-sticky" ng-show="academyDashboardCtrl.unverified_users.companies.length > 0">Empresas</subheader>
+      <md-subheader class="md-no-sticky" ng-show="academyDashboardCtrl.unverified_users.companies.length > 0">Empresas</md-subheader>
       <md-list-item class="md-2-line" ng-repeat="company in academyDashboardCtrl.unverified_users.companies" ui-sref="profile.company({user_id: company.user_id})">
         <md-icon md-font-library="material-icons" class="md-avatar">business</md-icon>
         <div class="md-list-item-text" layout="column">
@@ -16,7 +16,7 @@
       </md-list-item>
       <md-divider ng-show="academyDashboardCtrl.unverified_users.students.length > 0 && academyDashboardCtrl.unverified_users.companies.length > 0"></md-divider>
 
-      <subheader class="md-no-sticky" ng-show="academyDashboardCtrl.unverified_users.students.length > 0">Estudiantes</subheader>
+      <md-subheader class="md-no-sticky" ng-show="academyDashboardCtrl.unverified_users.students.length > 0">Estudiantes</md-subheader>
       <md-list-item class="md-3-line" ng-repeat="student in academyDashboardCtrl.unverified_users.students" ui-sref="profile.student({user_id: student.user_id})">
         <md-icon md-font-library="material-icons" class="md-avatar">face</md-icon>
         <div class="md-list-item-text" layout="column">
@@ -28,7 +28,7 @@
       </md-list-item>
       <md-divider ng-show="academyDashboardCtrl.unverified_users.academics.length > 0 && academyDashboardCtrl.unverified_users.students.length > 0"></md-divider>
 
-      <subheader class="md-no-sticky" ng-show="academyDashboardCtrl.unverified_users.academics.length > 0">Académicos</subheader>
+      <md-subheader class="md-no-sticky" ng-show="academyDashboardCtrl.unverified_users.academics.length > 0">Académicos</md-subheader>
       <md-list-item class="md-2-line" ng-repeat="academic in academyDashboardCtrl.unverified_users.academics" ui-sref="profile.academic({user_id: academic.user_id})">
         <md-icon md-font-library="material-icons" class="md-avatar">school</md-icon>
         <div class="md-list-item-text" layout="column">
@@ -42,6 +42,24 @@
   </md-whiteframe>
   <span flex></span>
   <md-whiteframe class="md-whiteframe-3dp" flex="45" layout-padding>
-    <p>Aqui van las clases</p>
+    <md-list>
+      <md-subheader class="md-no-sticky">Prácticas o proyectos por autorizar</md-subheader>
+      <md-list-item ng-show="academyDashboardCtrl.unverifiedEnrollments.length <= 0">No hay matriculas por autorizar.</md-list-item>
+      <md-list-item class="md-3-line" ng-repeat="enrollment in academyDashboardCtrl.unverifiedEnrollments">
+        <md-icon ng-show="enrollment.professional_practice" md-font-icon="material-icons" class="md-avatar">business_center</md-icon>
+        <md-icon ng-show="enrollment.graduation_project" md-font-icon="material-icons" class="md-avatar">build</md-icon>
+        <div ng-show="enrollment.professional_practice" class="md-list-item-text" layout="column">
+          <h3>{{enrollment.student.unitec_id}} - {{enrollment.student.name}}</h3>
+          <h4>{{enrollment.professional_practice.charge}}</h4>
+          <p>{{enrollment.professional_practice.company}}</p>
+        </div>
+        <div ng-show="enrollment.graduation_project" class="md-list-item-text" layout="column">
+          <h3>{{enrollment.student.unitec_id}} - {{enrollment.student.name}}</h3>
+          <h4>{{enrollment.graduation_project.name}}</h4>
+          <p>{{enrollment.graduation_project.company}}</p>
+        </div>
+        <md-button class="md-secondary md-accent" ng-click="academyDashboardCtrl.authorizeEnrollment(enrollment.id)">Autorizar</md-button>
+      </md-list-item>
+    </md-list>
   </md-whiteframe>
 </div>

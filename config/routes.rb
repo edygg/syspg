@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :enrollments
+  resources :classrooms
+  resources :enrollments do
+    get 'unverified_enrollments', on: :collection
+    put 'authorize_enrollment', on: :collection
+  end
   resources :quarters
   resources :company_categories
   resources :frequently_asked_questions
