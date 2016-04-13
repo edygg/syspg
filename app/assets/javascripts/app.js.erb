@@ -255,7 +255,7 @@ app.controller('HomeController', ['$scope', '$user', '$state', '$auth', function
         $state.go('unverified');
       } else {
         if ($user.isCompany()) {
-          $state.go('company.dashboard');
+          $state.go('company.publish');
         } else if ($user.isStudent()) {
           $state.go('student.dashboard');
         } else if ($user.isAcademicChef() || $user.isAcademic()) {
@@ -296,7 +296,7 @@ app.controller('SignInController', ['$auth', '$state', '$mdToast', '$scope', '$u
           if (response.role == "student") {
             $state.go('student.dashboard');
           } else if (response.role == "company") {
-            $state.go('company.dashboard');
+            $state.go('company.publish');
           } else {
             $state.go('academy.dashboard');
           }
