@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160412090130) do
+ActiveRecord::Schema.define(version: 20160413044357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,33 @@ ActiveRecord::Schema.define(version: 20160412090130) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "assignment_submissions", force: :cascade do |t|
+    t.integer  "student_id"
+    t.integer  "assignment_id"
+    t.decimal  "grade",                        precision: 5, scale: 2
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
+    t.string   "assignment_file_file_name"
+    t.string   "assignment_file_content_type"
+    t.integer  "assignment_file_file_size"
+    t.datetime "assignment_file_updated_at"
+    t.string   "counseling_file_file_name"
+    t.string   "counseling_file_content_type"
+    t.integer  "counseling_file_file_size"
+    t.datetime "counseling_file_updated_at"
+  end
+
+  create_table "assignments", force: :cascade do |t|
+    t.string   "name"
+    t.string   "dead_line"
+    t.string   "assignment_type"
+    t.string   "description"
+    t.decimal  "total_grade",     precision: 5, scale: 2
+    t.integer  "classroom_id"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+  end
+
   create_table "campus", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -37,6 +64,8 @@ ActiveRecord::Schema.define(version: 20160412090130) do
     t.integer  "academy_id"
     t.integer  "subject_id"
     t.integer  "quarter_id"
+    t.integer  "major_id"
+    t.integer  "campu_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

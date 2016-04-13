@@ -1,0 +1,14 @@
+<div layout="row" layout-align="center center">
+  <span flex></span>
+  <div flex="80">
+    <md-list>
+      <md-list-item ng-show="viewSubmissionsCtrl.assignment_submissions.length <= 0">No hay tareas entregadas.</md-list-item>
+      <md-list-item ng-repeat="submission in viewSubmissionsCtrl.assignment_submissions">
+        <p>{{submission.student_unitec_id}} - {{submission.student_name}}</p>
+        <md-button ng-href="{{submission.assignment_file_url}}" class="md-accent">Descargar entrega</md-button>
+        <md-button ng-show="submission.can_upload_counseling" class="md-accent" ngf-select="viewSubmissionsCtrl.uploadCounseling($file, submission.id)" ng-model="viewSubmissionsCtrl.counseling_file" name="file" ngf-max-size="20MB" ngf-min-height="100">Subir asesoria</md-button>
+      </md-list-item>
+    </md-list>
+  </div>
+  <span flex></span>
+</div>

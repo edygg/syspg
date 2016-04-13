@@ -1,0 +1,29 @@
+<div layout="row" layout-wrap layout-align="center center">
+  <p ng-show="classroomCtrl.classrooms.length <= 0">No hay clases que mostrar.</p>
+  <md-card ng-repeat="classroom in classroomCtrl.classrooms" flex="40">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">{{classroom.subject_name}}</span>
+        <span class="md-title">Sección {{classroom.section}}</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <p class="md-caption">Asesor: {{classroom.academic_name}}</p>
+      <p class="md-caption">Periodo {{classroom.quarter.period}} Año {{classroom.quarter.year}}</p>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-icon-button md-accent md-raised" aria-label="Administrar estudiantes" ui-sref="academy.manage_students({ classroom_id: classroom.id })">
+        <md-tooltip md-direction="top">Administrar estudiantes</md-tooltip>
+        <md-icon md-font-icon="material-icons">people</md-icon>
+      </md-button>
+      <md-button class="md-icon-button md-accent md-raised" aria-label="Entrar" ui-sref="academy.go_classroom({ classroom_id: classroom.id })">
+        <md-tooltip md-direction="top">Entrar</md-tooltip>
+        <md-icon md-font-icon="material-icons">call_made</md-icon>
+      </md-button>
+    </md-card-actions>
+  </md-card>
+</div>
+
+<md-button class="md-fab floating-bottom-right" aria-label="Crear clase" ng-click="classroomCtrl.showCreateClassroomDialog($event)">
+  <md-icon md-font-icon="material-icons">add</md-icon>
+</md-button>

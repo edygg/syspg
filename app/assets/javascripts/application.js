@@ -18,9 +18,10 @@
 //= require angular-aria/angular-aria.min
 //= require angular-messages/angular-messages.min
 //= require angular-material/angular-material.min
-//= require momentjs/min/moment-with-locales.min
-//= require angular-material-datetimepicker/js/angular-material-datetimepicker
+//= require moment/min/moment-with-locales.min
 //= require angular-ui-router/release/angular-ui-router.min
 //= require angular-cookie/angular-cookie.min
 //= require ng-token-auth/dist/ng-token-auth.min
+//= require mdPickers.min
+//= require ng-file-upload/ng-file-upload.min
 //= require_tree .

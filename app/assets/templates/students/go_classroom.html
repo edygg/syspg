@@ -1,0 +1,23 @@
+<div layout="column" layout-align="center center" >
+  <h1 class="md-display-1">{{classroomCtrl.classroom.subject_name}}</h1>
+  <h2 class="md-subhead">Sección {{classroomCtrl.classroom.section}} Periodo {{classroomCtrl.classroom.quarter.period}} Año {{classroomCtrl.classroom.quarter.year}}</h2>
+</div>
+
+<br><br>
+<div layout="row" layout-align="center center" layout-wrap>
+  <span ng-show="classroomCtrl.assignments.length <= 0">No hay asignaciones para los estudiantes.</span>
+  <md-card ng-repeat="assignment in classroomCtrl.assignments" flex="40">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">{{assignment.name}}</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <p ng-hide="assignment.can_send_submissions">Su asignación fue entregada al asesor del curso.</p>
+      <p ng-show="assignment.can_send_submissions">Seleccione el archivo que desea enviar a su asesor</p>
+      <input ng-show="assignment.can_send_submissions" type="file" ngf-select="classroomCtrl.upload($file, assignment.id)" ng-model="classroomCtrl.assignment_submission" name="file" ngf-max-size="20MB" ngf-min-height="100">
+      <md-button class="md-accent" ng-show="assignment.counseling_file_url" ng-href="{{assignment.counseling_file_url}}">Descargar asesoría</md-button>
+      <p class="md-caption">{{classroomCtrl.getDate(assignment.dead_line) | date:'medium'}}</p>
+    </md-card-content>
+  </md-card>
+</div>

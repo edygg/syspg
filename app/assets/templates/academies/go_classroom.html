@@ -1,0 +1,42 @@
+<md-whiteframe class="md-whiteframe-1dp">
+  <div layout="column" layout-align="center center" >
+    <h1 class="md-display-1">{{manageClassroomCtrl.classroom.subject_name}}</h1>
+    <h2 class="md-subhead">Sección {{manageClassroomCtrl.classroom.section}} Periodo {{manageClassroomCtrl.classroom.quarter.period}} Año {{manageClassroomCtrl.classroom.quarter.year}}</h2>
+  </div>
+</md-whiteframe>
+<br><br>
+<div layout="row" layout-align="center center" layout-wrap>
+  <span ng-show="manageClassroomCtrl.assignments.length <= 0">No hay asignaciones para los estudiantes.</span>
+  <md-card ng-repeat="assignment in manageClassroomCtrl.assignments" flex="40">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">{{assignment.name}}</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <p class="md-caption">{{manageClassroomCtrl.getDate(assignment.dead_line) | date:'medium'}}</p>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class="md-icon-button md-accent md-raised" aria-label="Administrar estudiantes" ui-sref="academy.view_assignment_submissions({ assignment_id: assignment.id })">
+        <md-tooltip md-direction="top">Ver tareas entregadas</md-tooltip>
+        <md-icon md-font-icon="material-icons">assignment_turned_in</md-icon>
+      </md-button>
+    </md-card-actions>
+  </md-card>
+</div>
+
+
+
+<md-fab-speed-dial class="md-scale floating-bottom-right" md-direction="up">
+  <md-fab-trigger>
+    <md-button aria-label="menu" class="md-fab md-accent">
+      <md-icon font-icon-family="material-icons">add</md-icon>
+    </md-button>
+  </md-fab-trigger>
+  <md-fab-actions>
+    <md-button aria-label="Agregar entrega" class="md-fab md-raised md-mini" ng-click="manageClassroomCtrl.showAssignmentCreateDialog($event)">
+      <md-tooltip md-direction="left" md-autohide="false">Agregar entrega</md-tooltip>
+      <md-icon font-icon-family="material-icons">assignment</md-icon>
+    </md-button>
+   </md-fab-actions>
+</md-fab-speed-dial>

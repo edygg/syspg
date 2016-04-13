@@ -5,6 +5,8 @@ class CreateClassrooms < ActiveRecord::Migration
       t.belongs_to :academy
       t.belongs_to :subject
       t.belongs_to :quarter
+      t.belongs_to :major
+      t.belongs_to :campu
 
       t.timestamps null: false
     end

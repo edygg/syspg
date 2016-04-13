@@ -1,0 +1,47 @@
+<md-dialog aria-label="Nueva asignación" ng-cloak style="width: 66%">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Nueva asignación</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="assignmentCtrl.cancel()">
+        <md-icon md-font-set="material-icons">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout="row" layout-padding layout-wrap>
+      <form novalidate name="assignmentCtrl.assignmentForm" ng-submit="assignmentCtrl.assignmentForm.$valid && assignmentCtrl.answer(assignmentCtrl.assignment)" flex layout="row" layout-wrap>
+        <md-input-container class="md-block" flex="50">
+          <label>Nombre</label>
+          <input ng-model="assignmentCtrl.assignment.name" name="name" required>
+          <div ng-messages="assignmentCtrl.assignmentForm.name.$error">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block" flex="50">
+          <label>Valor</label>
+          <input type="number" step="any" min="0" ng-model="assignmentCtrl.assignment.total_grade" name="total_grade" required>
+          <div ng-messages="assignmentCtrl.assignmentForm.total_grade.$error">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block" flex="100">
+          <label>Descripción</label>
+          <input ng-model="assignmentCtrl.assignment.description" name="description" required>
+          <div ng-messages="assignmentCtrl.assignmentForm.description.$error">
+            <div ng-message="required">Es requerido.</div>
+          </div>
+        </md-input-container>
+        <div flex="50">
+          <mdp-date-picker mdp-placeholder="Fecha de entrega" ng-model="assignmentCtrl.assignment.dead_line_date" required></mdp-date-picker>
+        </div>
+        <div flex="50">
+          <mdp-time-picker mdp-placeholder="Hora de entrega" ng-model="assignmentCtrl.assignment.dead_line_time" required></mdp-time-picker>
+        </div>
+      </form>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button ng-click="assignmentCtrl.assignmentForm.$valid && assignmentCtrl.answer(assignmentCtrl.assignment)" ng-disabled="!assignmentCtrl.assignmentForm.$valid">Guardar</md-button>
+  </md-dialog-actions>
+</md-dialog>

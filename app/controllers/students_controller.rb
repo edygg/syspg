@@ -4,7 +4,18 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.json
   def index
-    @students = Student.all
+    @students = Student.joins(:user).where(users: { verified: true })
+  end
+
+  def get_enroll_students
+    @students = []
+    Enrollment.all.each do |enrollment|
+      @students << enrollment.student
+    end
+  end
+
+  def classrooms
+    @classrooms = Classroom.joins(:students).where(students: { id: params[:student_id] })
   end
 
   # GET /students/1

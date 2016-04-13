@@ -1,0 +1,53 @@
+<md-dialog aria-label="Clase" ng-cloak style="width: 66%">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Crear clase</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="classroomCtrl.cancel()">
+        <md-icon md-font-set="material-icons">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout="row" layout-padding>
+      <form novalidate name="classroomCtrl.classroomForm" ng-submit="classroomCtrl.classroomForm.$valid && classroomCtrl.answer(classroomCtrl.classroom)" flex layout="row" layout-wrap>
+        <md-input-container class="md-block" flex="50">
+          <label>Asignatura</label>
+          <md-select required ng-model="classroomCtrl.classroom.subject_id" md-on-open="classroomCtrl.loadSubjects()">
+            <md-option ng-repeat="subject in classroomCtrl.subjects" value="{{subject.id}}">
+              {{subject.name}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container class="md-block" flex="50">
+          <label>Periodo</label>
+          <md-select required ng-model="classroomCtrl.classroom.quarter_id" md-on-open="classroomCtrl.loadQuarters()">
+            <md-option ng-repeat="quarter in classroomCtrl.quarters" value="{{quarter.id}}">
+              Periodo {{quarter.period}} Año {{quarter.year}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container class="md-block" flex="50">
+          <label>Asesor</label>
+          <md-select required ng-model="classroomCtrl.classroom.academy_id" md-on-open="classroomCtrl.loadAcademics()">
+            <md-option ng-repeat="academic in classroomCtrl.academics" value="{{academic.id}}">
+              {{academic.name}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container class="md-block" flex="50">
+          <label>Sección</label>
+          <input required ng-model="classroomCtrl.classroom.section" name="section" ng-pattern="/^[1-9][0-9]*$/">
+          <div ng-messages="classroomCtrl.classroomForm.section.$error">
+            <div ng-message="required">Es requerido.</div>
+            <div ng-message="pattern">Debe contener solamente números.</div>
+          </div>
+          </md-select>
+        </md-input-container>
+      </form>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button ng-click="classroomCtrl.classroomForm.$valid && classroomCtrl.answer(classroomCtrl.classroom)" ng-disabled="!classroomCtrl.classroomForm.$valid">Guardar</md-button>
+  </md-dialog-actions>
+</md-dialog>

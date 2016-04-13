@@ -1,0 +1,35 @@
+<div layout="row" layout-padding layout-align="center center">
+  <md-whiteframe class="md-whiteframe-1dp" flex="60" layout="row" layout-align="center center">
+    <md-autocomplete
+        md-selected-item="manageStudentsCtrl.selectedItem"
+        md-search-text="manageStudentsCtrl.searchText"
+        md-items="item in manageStudentsCtrl.querySearch(manageStudentsCtrl.searchText)"
+        md-item-text="item.name"
+        md-selected-item-change="manageStudentsCtrl.itemChange(item)"
+        md-min-length="0"
+        placeholder="Agregar estudiante..."
+        flex="80">
+      <md-item-template>
+        <span md-highlight-text="manageStudentsCtrl.searchText" md-highlight-flags="^i">{{item.unitec_id}} - {{item.name}} - {{item.type}}</span>
+      </md-item-template>
+      <md-not-found>
+        No hay un estudiante que coincida con este nombre "{{manageStudentsCtrl.searchText}}".
+      </md-not-found>
+    </md-autocomplete>
+    <md-button flex="20" class="md-accent md-raised" ng-click="manageStudentsCtrl.addStudent(manageStudentsCtrl.student)">Agregar</md-button>
+  </md-whiteframe>
+</div>
+<div layout="row" layout-padding layout-align="center center">
+  <md-list flex="70">
+    <md-subheader class="md-no-sticky">Estudiantes matriculados en esta sección</md-subheader>
+    <md-list-item ng-show="manageStudentsCtrl.students.length <= 0">No hay estudiantes agregados a esta clase.</md-list-item>
+    <md-list-item ng-repeat="student in manageStudentsCtrl.students">
+      <div class="md-list-item-text" layout="column">
+        <p>{{student.unitec_id}} - {{student.name}}</p>
+      </div>
+      <md-button class="md-secondary md-icon-button md-accent">
+        <md-icon md-font-icon="material-icons" ng-click="manageStudentsCtrl.deleteStudent(student.id)">delete</md-icon>
+      </md-button>
+    </md-list-item>
+  </md-list>
+</div>

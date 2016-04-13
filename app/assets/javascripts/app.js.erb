@@ -1,4 +1,4 @@
-app = angular.module('SyspgApp', ['ngMaterial', 'ui.router', 'ng-token-auth', 'ngMessages', 'ngMaterialDatePicker']);
+app = angular.module('SyspgApp', ['ngMaterial', 'ui.router', 'ng-token-auth', 'ngMessages', 'mdPickers', 'ngFileUpload']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$authProvider', function($stateProvider, $urlRouterProvider, $mdThemingProvider, $authProvider) {
   /* Router Paths */
@@ -93,6 +93,30 @@ app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$auth
       controller: 'AcademyDashboardController',
       controllerAs: 'academyDashboardCtrl'
     })
+    .state('academy.classrooms', {
+      url: '/classrooms',
+      templateUrl: "<%= asset_path('academies/classrooms.html') %>",
+      controller: 'ManageClassroomsController',
+      controllerAs: 'classroomCtrl'
+    })
+    .state('academy.manage_students', {
+      url: '/classroom/{classroom_id:int}/manage_students',
+      templateUrl: "<%= asset_path('academies/manage_students.html') %>",
+      controller: 'ManageClassroomStudentsController',
+      controllerAs: 'manageStudentsCtrl'
+    })
+    .state('academy.go_classroom', {
+      url: '/classroom/{classroom_id:int}/go_classroom',
+      templateUrl: "<%= asset_path('academies/go_classroom.html') %>",
+      controller: 'ManageClassroomController',
+      controllerAs: 'manageClassroomCtrl'
+    })
+    .state('academy.view_assignment_submissions', {
+      url: '/assignment/{assignment_id:int}',
+      templateUrl: "<%= asset_path('academies/view_assignment_submissions.html') %>",
+      controller: 'ViewAssignmentSubmissionController',
+      controllerAs: 'viewSubmissionsCtrl'
+    })
     .state('academy.general_settings', {
       url: '/general_settings',
       templateUrl: "<%= asset_path('academies/general_settings.html') %>",
@@ -127,7 +151,15 @@ app.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$auth
     })
     .state('student.dashboard', {
       url: '/dashboard',
-      templateUrl: "<%= asset_path('students/dashboard.html') %>"
+      templateUrl: "<%= asset_path('students/dashboard.html') %>",
+      controller: 'StudentDashboardController',
+      controllerAs: 'dashboardCtrl'
+    })
+    .state('student.go_classroom', {
+      url: '/classroom/{classroom_id:int}/go_classroom',
+      templateUrl: "<%= asset_path('students/go_classroom.html') %>",
+      controller: 'StudentClassroomController',
+      controllerAs: 'classroomCtrl'
     })
     .state('profile', {
       url: '/profiles',
@@ -1689,6 +1721,417 @@ app.controller('GraduationProjectDetailsController', ['$http', '$mdToast', '$sta
 
   this.loadGraduationProject();
   this.loadStudentInfo();
+}]);
+
+app.controller('ManageClassroomsController', ['$http', '$user', '$mdToast', '$mdDialog', function($http, $user, $mdToast, $mdDialog) {
+  var self = this;
+  this.classrooms = [];
+
+  this.loadClassrooms = function() {
+    $user.getAcademicInfo()
+      .then(function(academic) {
+        $http.get('/classrooms.json', { params: { major_id: academic.major_id, campus_id:  academic.campu_id} })
+          .then(function(response) {
+            self.classrooms = response.data;
+          })
+          .catch(function(errors) {
+            $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+          })
+      }, function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.showCreateClassroomDialog = function() {
+    $mdDialog.show({
+      controller: 'ClassroomController',
+      controllerAs: 'classroomCtrl',
+      templateUrl: "<%= asset_path('academies/classroom_dialog.html') %>",
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose: true,
+    })
+    .then(function(classroom) {
+      $user.getAcademicInfo()
+        .then(function(academic) {
+          classroom.campu_id = academic.campu_id;
+          classroom.major_id = academic.major_id;
+          $http.post('/classrooms.json', classroom)
+            .then(function(response) {
+              $mdToast.show($mdToast.simple().textContent('Clase creada.'));
+              self.loadClassrooms();
+            })
+            .catch(function(error) {
+              $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+            });
+        }, function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    });
+  };
+
+  this.loadClassrooms();
+}]);
+
+app.controller('ClassroomController', ['$http', '$mdDialog', '$user', '$mdToast', function($http, $mdDialog, $user, $mdToast) {
+  var self = this;
+  this.classroom = {};
+  this.academics = [];
+  this.subjects = [];
+  this.subjects = [];
+
+  this.loadQuarters = function() {
+    return $http.get('/quarters.json')
+      .then(function(response) {
+        self.quarters = response.data;
+      })
+      .catch(function(errors) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.loadSubjects = function() {
+    return $http.get('/subjects.json')
+      .then(function(response) {
+        self.subjects = response.data;
+      })
+      .catch(function(errors) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.loadAcademics = function() {
+    return $user.getAcademicInfo()
+      .then(function(academic) {
+        $http.get('/academies.json', { params: { campus_id: academic.campu_id, major_id: academic.major_id } })
+          .then(function(response) {
+            self.academics = response.data;
+          })
+          .catch(function(erros) {
+            $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+          });
+      }, function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+  this.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+
+}]);
+
+app.controller('ManageClassroomStudentsController', ['$http', '$mdToast', '$stateParams', function($http, $mdToast, $stateParams) {
+  var self = this;
+
+  this.student = {};
+  this.classroom = null;
+  this.students = [];
+  this.availableStudents = [];
+
+  // autocomplete variables
+  this.selectedItem = null;
+  this.searchText = null;
+
+  this.itemChange = function(item) {
+    self.student = item;
+  };
+
+  this.addStudent = function(student) {
+    if (self.classroom != null) {
+      $http.post('/classrooms/add_student_to_classroom.json', { classroom_id: self.classroom.id, student_id: student.id })
+        .then(function(response) {
+          $mdToast.show($mdToast.simple().textContent('Agregado a la clase.'));
+          self.searchText = null;
+          self.selectedItem = null;
+          self.loadStudents();
+        })
+        .catch(function(error) {
+            $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    }
+  };
+
+  this.deleteStudent = function(student_id) {
+    if (self.classroom != null) {
+      $http.delete('/classrooms/delete_student_from_classroom.json', { params: { classroom_id: self.classroom.id, student_id: student_id } })
+        .then(function(response) {
+          $mdToast.show($mdToast.simple().textContent('El estudiante ya no pertenece a la clase.'));
+          self.loadStudents();
+        })
+        .catch(function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    }
+  };
+
+  this.loadAvailableStudents = function() {
+    $http.get('/students/get_enroll_students.json')
+      .then(function(response) {
+        self.availableStudents = response.data.map(function(student) { student._lowername = student.name.toLowerCase(); return student; });
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.querySearch = function(query) {
+    var results = query ? self.availableStudents.filter(self.createFilterFor(query)) : self.availableStudents;
+    return results;
+  };
+
+  this.createFilterFor = function(query) {
+    var lowercaseQuery = angular.lowercase(query);
+    return function(student) {
+      return student._lowername.indexOf(lowercaseQuery) != -1
+    };
+  };
+
+  this.loadClassroom = function() {
+    $http.get('/classrooms/' + $stateParams.classroom_id + '.json')
+      .then(function(response) {
+        self.classroom = response.data;
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.loadStudents = function() {
+    $http.get('/classrooms/get_student_list.json', { params: { classroom_id: $stateParams.classroom_id } })
+      .then(function(response) {
+        self.students = response.data;
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      })
+  };
+
+  this.loadClassroom();
+  this.loadStudents();
+  this.loadAvailableStudents();
+}]);
+
+app.controller('ManageClassroomController', ['$http', '$user', '$mdToast', '$stateParams', '$mdDialog', function($http, $user, $mdToast, $stateParams, $mdDialog) {
+  var self = this;
+  this.classroom = {};
+  this.assignments = [];
+
+  this.loadClassroom = function() {
+    $http.get('/classrooms/' + $stateParams.classroom_id + '.json')
+      .then(function(response) {
+        self.classroom = response.data;
+        self.loadAssignments();
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      })
+  };
+
+  this.loadAssignments = function() {
+    $http.get('/assignments.json', { params: { classroom_id: self.classroom.id } })
+      .then(function(response) {
+        self.assignments = response.data;
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      })
+  };
+
+  this.showAssignmentCreateDialog = function(event) {
+    $mdDialog.show({
+      controller: 'AssignmentController',
+      controllerAs: 'assignmentCtrl',
+      templateUrl: "<%= asset_path('academies/assignment_dialog.html') %>",
+      parent: angular.element(document.body),
+      targetEvent: event,
+      clickOutsideToClose: true,
+      locals: {
+        classroomId: self.classroom.id
+      }
+    }).then(function(assignment) {
+      var dead_line = moment(assignment.dead_line_date)
+      dead_line.minute(moment(assignment.dead_line_time).minute());
+      dead_line.hour(moment(assignment.dead_line_time).hour());
+
+      assignment.dead_line = dead_line.format();
+      assignment.classroom_id = self.classroom.id;
+      assignment.assignment_type = 'assignment';
+      $http.post('/assignments.json', assignment)
+        .then(function(response) {
+          $mdToast.show($mdToast.simple().textContent('Se ha publicado la asignación.'));
+          self.loadAssignments();
+        })
+        .catch(function(error) {
+          $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+        });
+    })
+  };
+
+
+  this.getDate = function(dateString) {
+    return new Date(dateString);
+  };
+
+  this.loadClassroom();
+}]);
+
+app.controller('AssignmentController', ['$http', 'classroomId', '$mdDialog', function($http, classroomId, $mdDialog) {
+  var self = this;
+  this.assignment = {};
+
+  this.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+  this.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+}]);
+
+app.controller('StudentDashboardController', ['$http', '$user', '$mdToast', function($http, $user, $mdToast) {
+  var self = this;
+  this.classrooms = [];
+
+  this.loadClassrooms = function() {
+    $user.getStudentInfo()
+      .then(function(student) {
+        $http.get('/students/classrooms.json', { params: { student_id: student.id } })
+          .then(function(response) {
+            self.classrooms = response.data;
+          })
+          .catch(function(error) {
+            $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+          });
+      }, function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.loadClassrooms();
+}]);
+
+app.controller('StudentClassroomController', ['$http', '$user', '$mdToast', '$mdDialog', '$stateParams', 'Upload', function($http, $user, $mdToast, $mdDialog, $stateParams, Upload) {
+  var self = this;
+  this.classroom = {};
+  this.assignments = [];
+
+  this.loadClassroom = function() {
+    $http.get('/classrooms/' + $stateParams.classroom_id + '.json')
+      .then(function(response) {
+        self.classroom = response.data;
+        self.loadAssignments();
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      })
+  };
+
+  this.loadAssignments = function() {
+    $user.getStudentInfo()
+      .then(function(student) {
+        $http.get('/assignments/index_for_students.json', { params: { classroom_id: self.classroom.id, student_id: student.id } })
+          .then(function(response) {
+            self.assignments = response.data;
+          })
+          .catch(function(error) {
+            $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+          })
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.upload = function(file, assignment_id) {
+    $user.getStudentInfo()
+      .then(function(student) {
+        Upload.upload({
+          url: '/assignment_submissions.json',
+          method: 'POST',
+          headers: { 'Content-Type': false },
+          fields: {
+            'assignment_submission[assignment_id]': assignment_id,
+            'assignment_submission[student_id]': student.id,
+            'assignment_submission[assignment_file]': file
+          },
+          file: file,
+          sendFieldsAs: 'json'
+        }).then(function (resp) {
+          console.log('Success ' + resp.config.file.name + 'uploaded. Response: ' + resp.data);
+          self.loadAssignments();
+        }, function (resp) {
+          console.log('Error status: ' + resp.status);
+        }, function (evt) {
+          var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+          console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+        });
+      }, function(error) {
+
+      });
+  };
+
+  this.getDate = function(date_string) {
+    return new Date(date_string);
+  };
+
+  this.loadClassroom();
+}]);
+
+app.controller('ViewAssignmentSubmissionController', ['$http', '$stateParams', '$mdToast', 'Upload', function($http, $stateParams, $mdToast, Upload) {
+  var self = this;
+
+  this.assignment = {};
+  this.assignment_submissions = [];
+
+  this.loadAssigment = function() {
+    $http.get('/assignments/' + $stateParams.assignment_id + '.json')
+      .then(function(response) {
+        self.assignment = response.data;
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.loadAssigmentSubmissions = function() {
+    $http.get('/assignment_submissions.json', { params: { assignment_id: $stateParams.assignment_id } })
+      .then(function(response) {
+        self.assignment_submissions = response.data;
+      })
+      .catch(function(error) {
+        $mdToast.show($mdToast.simple().textContent('Ha ocurrido un error.'));
+      });
+  };
+
+  this.uploadCounseling = function(file, assignment_submission_id) {
+    $mdToast.show($mdToast.simple().textContent('No cierre la ventana del navegador. Subiendo archivo...'));
+    Upload.upload({
+          url: '/assignment_submissions/' + assignment_submission_id + '.json',
+          method: 'PUT',
+          headers: { 'Content-Type': false },
+          fields: {
+            'assignment_submission[counseling_file]': file
+          },
+          file: file,
+          sendFieldsAs: 'json'
+        }).then(function (resp) {
+          $mdToast.show($mdToast.simple().textContent('Subida exitosa del archivo ' + resp.config.file.name + '.'));
+          self.loadAssigmentSubmissions();
+        }, function (resp) {
+          $mdToast.show($mdToast.simple().textContent('Error al subir el archivo.'));
+        }, function (evt) {
+          var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+          console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+        });
+  };
+
+  this.loadAssigment();
+  this.loadAssigmentSubmissions();
 }]);
 
 /* End Controllers */

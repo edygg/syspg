@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
-  resources :classrooms
+  resources :assignment_submissions
+  resources :assignments do
+    get 'index_for_students', on: :collection
+  end
+  resources :classrooms do
+    get 'get_student_list', on: :collection
+    post 'add_student_to_classroom', on: :collection
+    delete 'delete_student_from_classroom', on: :collection
+  end
   resources :enrollments do
     get 'unverified_enrollments', on: :collection
     put 'authorize_enrollment', on: :collection
@@ -19,6 +27,8 @@ Rails.application.routes.draw do
   end
   resources :students do
     get 'student_belongs_to_user', on: :collection
+    get 'get_enroll_students', on: :collection
+    get 'classrooms', on: :collection
   end
   resources :majors
   resources :faculties

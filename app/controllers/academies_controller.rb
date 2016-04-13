@@ -4,7 +4,7 @@ class AcademiesController < ApplicationController
   # GET /academies
   # GET /academies.json
   def index
-    @academies = Academy.all
+    @academies = Academy.joins(:user).where(academies: { campu_id: params[:campus_id], major_id: params[:major_id] }, users: { verified: true })
   end
 
   # GET /academies/1

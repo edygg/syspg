@@ -65,3 +65,8 @@ md-divider {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-inner-spin-button{
+    display: none;
+}

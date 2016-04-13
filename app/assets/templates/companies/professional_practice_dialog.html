@@ -48,13 +48,6 @@
             <label>Observaciones</label>
             <textarea ng-model="professionalPracticeCtrl.professionalPractice.observation" name="practiceObservation"></textarea>
           </md-input-container>
-          <md-input-container flex="33">
-            <label>Hora de entrada</label>
-            <input mdc-datetime-picker date="false" time="true" type="text" id="time" short-time="true"
-               placeholder="Time"
-               format="hh:mm a"
-               ng-model="time">
-          </md-input-container>
           <md-chips style="margin-bottom: 30px;" ng-hide="professionalPracticeCtrl.edit" ng-model="professionalPracticeCtrl.professionalPractice.selected_majors" md-transform-chip="professionalPracticeCtrl.transformChip($chip)" md-autocomplete-snap md-require-match="true" flex="100">
             <md-autocomplete
               md-selected-item="professionalPracticeCtrl.selectedItem"
