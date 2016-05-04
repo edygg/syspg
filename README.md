@@ -32,11 +32,11 @@ Coloque los siguientes comandos para instalar Nginx
 	sudo apt-get install curl git-core nginx -y
 ```
 
-#### Paso 2 - Instalar MySQL
-Coloque los siguientes comandos para instalar MySQL
+#### Paso 2 - Instalar PostgreSQL
+Coloque los siguientes comandos para instalar PostgreSQL
 ```bash
 	sudo apt-get update
-	sudo apt-get install mysql-server
+	sudo apt-get install postgresql postgresql-contrib
 ```
 
 #### Paso 3 - Crear un usuario para PostgreSQL
