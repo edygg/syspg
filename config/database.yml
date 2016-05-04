@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: syspg_production
-  username: postgres
-  # password: SySpG2016!
+  username: syspg
+  password: SySpG2016!
