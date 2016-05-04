@@ -13,7 +13,7 @@ end
 Major.create([
   { name: 'Ingeniería en Sistemas Computacionales', faculty: faculty1 },
   { name: 'Ingeniería Civil', faculty: faculty1 },
-  { name: 'Ingeniría Indrustrial y Sistemas', faculty: faculty1 }
+  { name: 'Ingeniría Indrustrial y de Sistemas', faculty: faculty1 }
   ]) if Major.where(faculty_id: faculty1.id).count == 0
 
 Major.create([
@@ -72,12 +72,28 @@ if company_user.nil?
   company_profile = Company.create(name: 'Enterprise', phone: '22222222', web_site: 'enterprise.com.hn', contact_name: 'Edilson Fernando Gonzalez', contact_email: 'egonzalez@enterprise.com.hn', contact_phone: '89607624', contact_job_title: 'Consultor SAP', user_id: company_user.id, company_category: CompanyCategory.last)
 end
 
-academic_chef_user = User.where(email: "academic_chef1@unitec.edu").first
-if academic_chef_user.nil?
-  academic_chef_user = User.new(email: "academic_chef1@unitec.edu", password: "computacion1.", role: "academy_chef", verified: true)
-  academic_chef_user.skip_confirmation!
-  academic_chef_user.save
-  academic_chef_profile = Academy.create(name: "Laurenn Alecxandra Cruz", phone: "22467879", campu: Campu.first, major: Major.first, user: academic_chef_user)
+academic_chef_user1 = User.where(email: "academic_chef1@unitec.edu").first
+if academic_chef_user1.nil?
+  academic_chef_user1 = User.new(email: "academic_chef1@unitec.edu", password: "computacion1.", role: "academy_chef", verified: true)
+  academic_chef_user1.skip_confirmation!
+  academic_chef_user1.save
+  academic_chef_profile1 = Academy.create(name: "Reynod Marcial Bocanegra Sanchez", phone: "22681000 ext. 1337", campu: Campu.first, major: Major.find_by_name("Ingeniería en Sistemas Computacionales"), user: academic_chef_user1)
+end
+
+academic_chef_user2 = User.where(email: "academic_chef2@unitec.edu").first
+if academic_chef_user2.nil?
+  academic_chef_user2 = User.new(email: "academic_chef2@unitec.edu", password: "computacion1.", role: "academy_chef", verified: true)
+  academic_chef_user2.skip_confirmation!
+  academic_chef_user2.save
+  academic_chef_profile2 = Academy.create(name: "José Joaquín Guardado Juarez", phone: "22681000 ext. 1337", campu: Campu.first, major: Major.find_by_name("Ingeniería Civil"), user: academic_chef_user2)
+end
+
+academic_chef_user3 = User.where(email: "academic_chef3@unitec.edu").first
+if academic_chef_user3.nil?
+  academic_chef_user3 = User.new(email: "academic_chef3@unitec.edu", password: "computacion1.", role: "academy_chef", verified: true)
+  academic_chef_user3.skip_confirmation!
+  academic_chef_user3.save
+  academic_chef_profile3 = Academy.create(name: "Anael Espinal", phone: "22681000 ext. 1337", campu: Campu.first, major: Major.find_by_name("Ingeniría Indrustrial y de Sistemas"), user: academic_chef_user3)
 end
 
 academic_user = User.where(email: "academic@unitec.edu").first
@@ -134,46 +150,46 @@ end
 # Practicas profesionales
 ProfessionalPractice.destroy_all
 
-pp1 = ProfessionalPractice.new(area: 'Area 1', charge: 'Cargo 1', objective: 'Objectivo 1', daily_tasks: 'Responsabilidades 1', boss_name: 'Jefe 1', boss_email: 'jefe1@jefe.com', check_in: '', check_out: '', hire_probability: false, flexitime: false, company: Company.first)
+pp1 = ProfessionalPractice.new(area: 'Development Team', charge: 'Desarrollador Web', objective: 'Desarrollar Frontend sobre tecnologías web', daily_tasks: 'Desarrollar sobre AngularJS y SAP UI5.', boss_name: 'Levy Gonzalez', boss_email: 'levyg@enterprise.com.hn', check_in: '', check_out: '', hire_probability: true, flexitime: false, company: Company.first)
 pp1.majors << Major.first
 pp1.save
 
-pp2 = ProfessionalPractice.new(area: 'Area 2', charge: 'Cargo 2', objective: 'Objectivo 2', daily_tasks: 'Responsabilidades 2', boss_name: 'Jefe 2', boss_email: 'jefe2@jefe.com', check_in: '', check_out: '', hire_probability: false, flexitime: false, company: Company.first)
+pp2 = ProfessionalPractice.new(area: 'Development Team', charge: 'Desarrollador Web', objective: 'Desarrollar Backend sobre tecnologías web', daily_tasks: 'Desarrollar sobre SAP HANNA, NodeJS, Rails y otras tecnologías.', boss_name: 'Levy Gonzalez', boss_email: 'levyg@enterprise.com.hn', check_in: '', check_out: '', hire_probability: true, flexitime: false, company: Company.first)
 pp2.majors << Major.first
 pp2.save
 
-pp3 = ProfessionalPractice.new(area: 'Area 3', charge: 'Cargo 3', objective: 'Objectivo 3', daily_tasks: 'Responsabilidades 3', boss_name: 'Jefe 3', boss_email: 'jefe3@jefe.com', check_in: '', check_out: '', hire_probability: false, flexitime: false, company: Company.first)
+pp3 = ProfessionalPractice.new(area: 'Development Team', charge: 'Tester de aplicaciones web', objective: 'Probar aplicativos web a través de scripts controlados para mantener la calidad del software.', daily_tasks: 'Realizar pruuebas unitarias y de integración con Selenium IDE', boss_name: 'Levy Gonzalez', boss_email: 'levyg@enterprise.com.hn', check_in: '', check_out: '', hire_probability: true, flexitime: false, company: Company.first)
 pp3.majors << Major.first
 pp3.save
 
-pp4 = ProfessionalPractice.new(area: 'Area 4', charge: 'Cargo 4', objective: 'Objectivo 4', daily_tasks: 'Responsabilidades 4', boss_name: 'Jefe 4', boss_email: 'jefe4@jefe.com', check_in: '', check_out: '', hire_probability: false, flexitime: false, company: Company.first)
+pp4 = ProfessionalPractice.new(area: 'Ventas', charge: 'Administrador de Ventas', objective: 'Mejorar el posicionamieto en el mercado de los productos y servicios que brinda la empresa.', daily_tasks: 'Establecer alianzas, buscar proveedores, revisar los procesos de ventas de productos y servicios.', boss_name: 'Katerin Alfaro', boss_email: 'kalfaro@enterprise.com.hn', check_in: '', check_out: '', hire_probability: true, flexitime: true, company: Company.first)
 pp4.majors << Major.last
 pp4.save
 
-pp5 = ProfessionalPractice.new(area: 'Area 5', charge: 'Cargo 5', objective: 'Objectivo 5', daily_tasks: 'Responsabilidades 5', boss_name: 'Jefe 5', boss_email: 'jefe5@jefe.com', check_in: '', check_out: '', hire_probability: false, flexitime: false, company: Company.first)
+pp5 = ProfessionalPractice.new(area: 'Departamento de Empresas Públicas', charge: 'Gerente de Operaciones', objective: 'Objectivo 5', daily_tasks: 'Establecer un lazo de relaciones entre el cliente y la empresa.', boss_name: 'Katerin Alfaro', boss_email: 'kalfaro@enterprise.com.hn', check_in: '', check_out: '', hire_probability: false, flexitime: false, company: Company.first)
 pp5.majors << Major.last
 pp5.save
 
 # Proyectos de Graduación
 GraduationProject.destroy_all
 
-gp1 = GraduationProject.new(name: 'Nombre 1', description: 'Descripción 1', objective: 'Objetivo 1', requirements: 'Requisitos 1', company: Company.first)
+gp1 = GraduationProject.new(name: 'Rasperry Pi Cluster', description: 'Desarrollar un cluster de Raspberry Pi para montar microservicios construidos en NodeJS y administrados con containers de Docker.', objective: 'Construir un cluster utilizando computadoras de bajo precio y consumo para la utilización de microservicios en PYMES.', requirements: 'Experiencia en infraestructura, NodeJS, AngularJS y Docker.', company: Company.first)
 gp1.majors << Major.first
 gp1.save
 
-gp2 = GraduationProject.new(name: 'Nombre 2', description: 'Descripción 2', objective: 'Objetivo 2', requirements: 'Requisitos 2', company: Company.first)
+gp2 = GraduationProject.new(name: 'Mobile CMS', description: 'Crear un CMS genérico para iOS y Android', objective: 'Crear un CMS para PYMES que pueda funcionar en iOS y Android', requirements: 'Tener conocimientos básicos de programación móvil.', company: Company.first)
 gp2.majors << Major.first
 gp2.save
 
-gp3 = GraduationProject.new(name: 'Nombre 3', description: 'Descripción 3', objective: 'Objetivo 3', requirements: 'Requisitos 3', company: Company.first)
+gp3 = GraduationProject.new(name: 'Enterprise Portal', description: 'Dashboard y portal de acciones y bolsa de valores.', objective: 'Crear un portal para que los ejecutivos estén al tanto del cambio de sus acciones en la bolsa de valores.', requirements: 'Conocer programación web básica en PHP.', company: Company.first)
 gp3.majors << Major.first
 gp3.save
 
-gp4 = GraduationProject.new(name: 'Nombre 4', description: 'Descripción 4', objective: 'Objetivo 4', requirements: 'Requisitos 4', company: Company.first)
+gp4 = GraduationProject.new(name: 'Revisión de procesos contables en Empresa AstroLuna', description: 'Revisión y depuración de los procesos contables de la Empresa AstroLuna.', objective: 'Revisar y optimizar los procesos contables de la empresa AstroLuna.', requirements: 'Tener conocimientos básicos como asistente de auditoria.', company: Company.first)
 gp4.majors << Major.last
 gp4.save
 
-gp5 = GraduationProject.new(name: 'Nombre 5', description: 'Descripción 5', objective: 'Objetivo 5', requirements: 'Requisitos 5', company: Company.first)
+gp5 = GraduationProject.new(name: 'Optimización de procesos de ventas en AstroLuna', description: 'Revisión y depuración de los procesos de venta de la Empresa AstroLuna.', objective: 'Revisar y optimizar los procesos de venta de la empresa AstroLuna.', requirements: 'Tener conocimientos básicos como asistente de auditoria.', company: Company.first)
 gp5.majors << Major.last
 gp5.save
 
