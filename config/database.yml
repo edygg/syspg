@@ -82,4 +82,4 @@ production:
   <<: *default
   database: syspg_production
   username: syspg
-  password: <%= ENV['SYSPG_DATABASE_PASSWORD'] %>
+  password: SySpG2016!
