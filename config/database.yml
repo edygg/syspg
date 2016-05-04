@@ -82,4 +82,4 @@ production:
   <<: *default
   database: syspg_production
   username: postgres
-  # password: SySpG2016!
+  password: 
